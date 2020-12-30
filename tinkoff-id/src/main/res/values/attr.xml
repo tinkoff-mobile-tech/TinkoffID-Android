@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="TinkoffIdSignInButton" tools:ignore="ResourceName">
+        <attr name="tinkoff_id_size" format="enum">
+            <enum name="standard" value="0" />
+            <enum name="compact" value="1" />
+        </attr>
+    </declare-styleable>
+
+</resources>

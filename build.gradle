@@ -1,0 +1,35 @@
+apply from: 'gradle/versions.gradle'
+
+def useMavenLocal = project.hasProperty("useMavenLocal")
+print("useMavenLocal = " + useMavenLocal)
+
+buildscript {
+
+    apply from: 'gradle/versions.gradle'
+
+    repositories {
+        // mavenLocal() // Uncomment when testing on Maven local repository
+        google()
+        jcenter()
+        maven { url 'https://plugins.gradle.org/m2/' }
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:${androidPluginVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${detektVersion}"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokkaVersion}"
+    }
+}
+
+allprojects {
+    repositories {
+        if (useMavenLocal) mavenLocal()
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

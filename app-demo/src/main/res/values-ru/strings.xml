@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Partner Auth</string>
+    <string name="partner_auth_refresh_btn">Обновить токен</string>
+    <string name="partner_auth_revoke_btn">Отозвать токен</string>
+
+</resources>
