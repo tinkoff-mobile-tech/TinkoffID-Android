@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="tinkoff_id_n1">#333333</color>
+    <color name="tinkoff_id_n2">#ffdd2d</color>
+    <color name="tinkoff_id_n2_pressed">#ffcd33</color>
+    <color name="tinkoff_id_n2_disabled">#f6f7f8</color>
+
+</resources>

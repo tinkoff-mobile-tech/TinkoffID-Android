@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: rootProject.file('gradle/versions.gradle')
+apply from: rootProject.file('gradle/plugin/detekt.gradle')
+
+def getBuildVersionCode = (project.findProperty("buildCounter") == null)
+        ? 1
+        : Integer.parseInt(project.findProperty("buildCounter"))
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        multiDexEnabled = true
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode getBuildVersionCode
+        versionName authVersion
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+    api project(':tinkoff-id')
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    api "androidx.appcompat:appcompat:${appCompatVersion}"
+    api "androidx.constraintlayout:constraintlayout:${constraintLayoutVersion}"
+    //rx
+    api "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    api "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+}

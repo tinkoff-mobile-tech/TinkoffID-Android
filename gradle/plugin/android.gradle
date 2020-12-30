@@ -1,0 +1,55 @@
+apply plugin: 'com.android.library'
+apply from: '../gradle/plugin/kotlin-library.gradle'
+apply plugin: 'org.jetbrains.dokka'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.compileSdkVersion
+        multiDexEnabled = true
+        versionCode rootProject.authCode
+        versionName rootProject.authVersion
+        buildConfigField 'String', 'VERSION_NAME', "\"${rootProject.authVersion}\""
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        htmlReport true
+        abortOnError true
+        warningsAsErrors true
+        disable 'GradleDependency'
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/androidx.exifinterface_exifinterface.version'
+    }
+
+    testOptions {
+        unitTests {
+            returnDefaultValues = true
+            includeAndroidResources = true
+        }
+    }
+
+    kotlinOptions {
+        freeCompilerArgs += '-Xexplicit-api=strict'
+    }
+
+    dokkaHtml.configure {
+        dokkaSourceSets {
+            configureEach {
+                includeNonPublic.set(false)
+                noAndroidSdkLink.set(false)
+            }
+        }
+    }
+}
