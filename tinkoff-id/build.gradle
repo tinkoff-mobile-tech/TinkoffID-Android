@@ -1,0 +1,16 @@
+apply from: '../gradle/plugin/android.gradle'
+apply from: '../gradle/plugin/publish.gradle'
+
+android {
+
+    resourcePrefix 'tinkoff_id_'
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:${appCompatVersion}"
+    implementation "com.squareup.okhttp3:okhttp:${okHttpVersion}"
+}
+
+repositories {
+    mavenCentral()
+}
