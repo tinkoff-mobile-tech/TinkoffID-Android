@@ -2,5 +2,10 @@
     <string name="app_name">Partner Auth</string>
     <string name="partner_auth_refresh_btn">Refresh token</string>
     <string name="partner_auth_revoke_btn">Revoke token</string>
+    <string name="partner_auth_client_id" translatable="false">ClientId</string>
+    <string name="partner_auth_test_partner_mobile" translatable="false">test-partner-mobile</string>
+    <string name="partner_auth_save" translatable="false">Save</string>
+    <string name="partner_auth_compact" translatable="false">compact</string>
+    <string name="partner_auth_standard" translatable="false">standard</string>
 
 </resources>
