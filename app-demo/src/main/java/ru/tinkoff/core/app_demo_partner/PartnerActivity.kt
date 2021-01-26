@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ru.tinkoff.core.tinkoffId.TinkoffIdAuth
@@ -18,9 +19,11 @@ class PartnerActivity : AppCompatActivity() {
         .appendPath("partner")
         .build()
 
-    private val tinkoffPartnerAuth by lazy(NONE) { TinkoffIdAuth(applicationContext, "test-partner-mobile") }
-    private val partnerPresenter by lazy(NONE) { PartnerPresenter(tinkoffPartnerAuth, this) }
+    private lateinit var tinkoffPartnerAuth: TinkoffIdAuth
 
+    private val partnerPresenter by lazy(NONE) { PartnerPresenter(tinkoffPartnerAuth, this) }
+    private val clientIdEditText by lazy(NONE) { findViewById<EditText>(R.id.etClientId) }
+    private val buttonSaveClientId by lazy(NONE) { findViewById<Button>(R.id.buttonSaveClientId) }
     private val compactButtonTinkoffAuth by lazy(NONE) { findViewById<Button>(R.id.compactButtonTinkoffAuth) }
     private val standardButtonTinkoffAuth by lazy(NONE) { findViewById<Button>(R.id.standardButtonTinkoffAuth) }
     private val buttonUpdateToken by lazy(NONE) { findViewById<Button>(R.id.buttonUpdateToken) }
@@ -29,6 +32,7 @@ class PartnerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_partner)
+        tinkoffPartnerAuth = TinkoffIdAuth(applicationContext, "test-partner-mobile")
         intent.data?.let { partnerPresenter.getToken(it) }
 
         val clickListener = View.OnClickListener {
@@ -46,6 +50,10 @@ class PartnerActivity : AppCompatActivity() {
         }
         buttonRevokeToken.setOnClickListener {
             partnerPresenter.revokeToken()
+        }
+
+        buttonSaveClientId.setOnClickListener {
+            tinkoffPartnerAuth = TinkoffIdAuth(applicationContext, clientIdEditText.text.toString())
         }
     }
 
