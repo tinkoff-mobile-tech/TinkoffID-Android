@@ -7,14 +7,42 @@
     tools:context=".PartnerActivity">
 
     <TextView
-        android:id="@+id/compactButtonLabel"
+        android:id="@+id/textViewClientIdHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="compact"
+        android:text="@string/partner_auth_client_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etClientId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/partner_auth_test_partner_mobile"
+        app:layout_constraintEnd_toStartOf="@+id/buttonSaveClientId"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewClientIdHeader" />
+
+    <Button
+        android:id="@+id/buttonSaveClientId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/partner_auth_save"
+        app:layout_constraintBottom_toTopOf="@+id/compactButtonLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/etClientId" />
+
+
+    <TextView
+        android:id="@+id/compactButtonLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/partner_auth_compact"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etClientId" />
 
     <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
         android:id="@+id/compactButtonTinkoffAuth"
@@ -31,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="standard"
+        android:text="@string/partner_auth_standard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/compactButtonTinkoffAuth" />
