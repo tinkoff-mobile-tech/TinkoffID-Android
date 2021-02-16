@@ -2,6 +2,8 @@ package ru.tinkoff.core.tinkoffId.api
 
 import okhttp3.Call
 import okhttp3.FormBody
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
@@ -11,7 +13,10 @@ import ru.tinkoff.core.tinkoffId.BuildConfig
 /**
  * @author Stanislav Mukhametshin
  */
-internal class TinkoffIdApi(private val client: OkHttpClient) {
+internal class TinkoffIdApi(
+    private val client: OkHttpClient,
+    private val host: HttpUrl = HOST.toHttpUrl()
+) {
 
     fun getToken(code: String, codeVerifier: String, clientId: String): Call {
         val formBody = FormBody.Builder()
@@ -48,11 +53,14 @@ internal class TinkoffIdApi(private val client: OkHttpClient) {
     }
 
     private fun createRequest(path: String, requestBody: RequestBody, clientId: String): Call {
+        val url = host.newBuilder()
+            .addPathSegments(path)
+            .build()
         val request = Request.Builder()
             .addHeader(HEADER_AUTHORIZATION, generateBasicHeader(clientId))
             .addHeader(HEADER_ACCEPT, "application/json")
             .addHeader(HEADER_X_SSO_NO_ADAPTER, "true")
-            .url("$HOST$path")
+            .url(url)
             .post(requestBody)
             .build()
         return client.newCall(request)
