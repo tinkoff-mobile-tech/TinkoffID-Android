@@ -4,11 +4,21 @@ apply from: '../gradle/plugin/publish.gradle'
 android {
 
     resourcePrefix 'tinkoff_id_'
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:${appCompatVersion}"
-    implementation "com.squareup.okhttp3:okhttp:${okHttpVersion}"
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "com.google.truth:truth:$truthVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation "androidx.test:core:$testCoreVersion"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserverVersion"
 }
 
 repositories {
