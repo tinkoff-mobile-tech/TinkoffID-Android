@@ -1,0 +1,31 @@
+ext {
+    compileSdkVersion = 29
+    minSdkVersion = 21
+    targetSdkVersion = 29
+
+    isRelease = project.hasProperty('release')
+    authCode = VERSION_CODE.toInteger()
+    authVersion = getVersionName(VERSION_NAME)
+
+    constraintLayoutVersion = '2.0.4'
+    rxJavaVersion = '2.2.20'
+    rxAndroidVersion = '2.1.1'
+
+    kotlinVersion = '1.4.21'
+    appCompatVersion = '1.2.0'
+    okHttpVersion = '4.9.0'
+
+    detektVersion = '1.15.0'
+    dokkaVersion = '1.4.20'
+    androidPluginVersion = '4.1.1'
+
+    junitVersion = '4.13.1'
+    truthVersion = '1.1.2'
+    robolectricVersion = '4.4'
+    testCoreVersion = '1.3.0'
+    mockwebserverVersion = '4.9.0'
+}
+
+def getVersionName(version) {
+    return isRelease ? version : "${version}-SNAPSHOT"
+}

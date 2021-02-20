@@ -1,0 +1,7 @@
+apply plugin: 'kotlin-android'
+apply from: rootProject.file('gradle/plugin/detekt.gradle')
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+}

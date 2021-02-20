@@ -1,0 +1,16 @@
+.gradle/
+.idea/*.xml
+.idea/caches
+.idea/libraries
+build/
+.DS_Store
+
+/local.properties
+/gradle.properties
+installlocal.bat
+
+*.iml
+*.eml
+*.iws
+
+gradle/plugin/custom.gradle
