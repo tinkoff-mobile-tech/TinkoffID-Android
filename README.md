@@ -81,6 +81,8 @@ tinkoffIdAuth.obtainTokenPayload(refreshToken)
 
 ### UI
 
+Чтобы подробнее ознакомиться со стайлгайдом по размещению кнопок перейдите по [ссылке](https://www.figma.com/file/TsgXOeAqFEePVIosk0W7kP/Tinkoff-ID)
+
 Библиотека предоставляет кнопку `TinkoffIdSignInButton.kt`.
 Пример по ее настройке доступен в `PartnerActivity.kt` и `activity_partner.xml`. Размер кнопки настраивается через атрибут
 `app:tinkoff_id_size`, который может иметь значение `compact` или `standard` (по умолчанию). Подробное описание
