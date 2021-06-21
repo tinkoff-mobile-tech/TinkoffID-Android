@@ -33,7 +33,8 @@ import java.util.concurrent.TimeUnit
  */
 public class TinkoffIdAuth(
     context: Context,
-    private val clientId: String
+    private val clientId: String,
+    private val redirectUri: String
 ) {
 
     private val applicationContext = context.applicationContext
@@ -62,7 +63,7 @@ public class TinkoffIdAuth(
         val codeChallenge = CodeVerifierUtil.deriveCodeVerifierChallenge(codeVerifier)
         val codeChallengeMethod = CodeVerifierUtil.getCodeVerifierChallengeMethod()
         codeVerifierStore.codeVerifier = codeVerifier
-        return AppLinkUtil.createAppLink(clientId, codeChallenge, codeChallengeMethod, callbackUrl, applicationContext.packageName)
+        return AppLinkUtil.createAppLink(clientId, codeChallenge, codeChallengeMethod, callbackUrl, applicationContext.packageName, redirectUri)
     }
 
     /**
@@ -88,7 +89,7 @@ public class TinkoffIdAuth(
     @Throws(TinkoffRequestException::class)
     public fun getTinkoffTokenPayload(uri: Uri): TinkoffCall<TinkoffTokenPayload> {
         val code = requireNotNull(AppLinkUtil.getAuthCode(uri))
-        return partnerService.getToken(code, codeVerifierStore.codeVerifier, clientId)
+        return partnerService.getToken(code, codeVerifierStore.codeVerifier, clientId, redirectUri)
     }
 
     /**
