@@ -34,11 +34,11 @@ internal class TinkoffIdApi(
     private val host: HttpUrl = HOST.toHttpUrl()
 ) {
 
-    fun getToken(code: String, codeVerifier: String, clientId: String): Call {
+    fun getToken(code: String, codeVerifier: String, clientId: String, redirectUri: String): Call {
         val formBody = FormBody.Builder()
             .add(FIELD_GRANT_TYPE, GRANT_TYPE_AUTHORIZATION_CODE)
             .add(FIELD_CODE, code)
-            .add(FIELD_REDIRECT_URI, PARAM_DEFAULT_REDIRECT_URI)
+            .add(FIELD_REDIRECT_URI, redirectUri)
             .add(FIELD_VENDOR, PARAM_DEFAULT_VENDOR)
             .add(FIELD_CODE_VERIFIER, codeVerifier)
             .add(FIELD_CLIENT_ID, clientId)
@@ -109,7 +109,6 @@ internal class TinkoffIdApi(
         private const val FIELD_CLIENT_VERSION = "client_version"
 
         private const val PARAM_DEFAULT_VENDOR = "tinkoff_android"
-        private const val PARAM_DEFAULT_REDIRECT_URI = "mobile://"
         private const val GRANT_TYPE_AUTHORIZATION_CODE = "authorization_code"
         private const val GRANT_TYPE_REFRESH_TOKEN = "refresh_token"
 

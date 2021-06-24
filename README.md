@@ -22,6 +22,7 @@ implementation "ru.tinkoff.core.tinkoffauth:tinkoff-id:${version}"
 Для работы SDK необходимо следующее:
 
 + Зарегистрированный идентификатор авторизуемого приложения (`client_id`)
++ Uri авторизуемого клиента, на который будет выполнен редирект по завершению авторизации (`redirectUri`)
 + Зарегистрированный авторизуемым приложением [App Link](https://developer.android.com/training/app-links), который будет использоваться для возврата в приложение после авторизации. Использование deep link возможно, но не рекомендовано.
 + Авторизация через Тинькофф будет работать только начиная с версии Android 6.0, на более ранних версиях получить авторизационные данные не будет возможности.
 
@@ -37,7 +38,7 @@ implementation "ru.tinkoff.core.tinkoffauth:tinkoff-id:${version}"
 ### Выполнение авторизации
 
 Для авторизации:
-1. Необходимо создать объект `TinkoffIdAuth(applicationContext, clientId)` - это основной класс для работы с библиотекой.
+1. Необходимо создать объект `TinkoffIdAuth(applicationContext, clientId, redirectUri)` - это основной класс для работы с библиотекой.
 2. Запустить партнерскую авторизацию, передав ваш App/Deep link (по данному uri приложение группы Тинькофф вернется обратно после процесса авторизации)
 ```kotlin
     val intent = tinkoffIdAuth.createTinkoffAuthIntent(partnerUri)

@@ -19,6 +19,8 @@ class PartnerActivity : AppCompatActivity() {
         .appendPath("partner")
         .build()
 
+    private val redirectUri = "mobile://"
+
     private lateinit var tinkoffPartnerAuth: TinkoffIdAuth
 
     private val partnerPresenter by lazy(NONE) { PartnerPresenter(tinkoffPartnerAuth, this) }
@@ -32,7 +34,7 @@ class PartnerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_partner)
-        tinkoffPartnerAuth = TinkoffIdAuth(applicationContext, "test-partner-mobile")
+        tinkoffPartnerAuth = TinkoffIdAuth(applicationContext, "test-partner-mobile", redirectUri)
         intent.data?.let { partnerPresenter.getToken(it) }
 
         val clickListener = View.OnClickListener {
@@ -53,7 +55,7 @@ class PartnerActivity : AppCompatActivity() {
         }
 
         buttonSaveClientId.setOnClickListener {
-            tinkoffPartnerAuth = TinkoffIdAuth(applicationContext, clientIdEditText.text.toString())
+            tinkoffPartnerAuth = TinkoffIdAuth(applicationContext, clientIdEditText.text.toString(), redirectUri)
         }
     }
 
