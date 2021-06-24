@@ -120,7 +120,7 @@ tinkoffIdAuth.obtainTokenPayload(refreshToken)
 | `signOutByAccessToken(accessToken: String): TinkoffCall<Unit>` | Возвращает объект, который позволяет синхронно разлогинить по accessToken                             |
 | `signOutByRefreshToken(refreshToken: String): TinkoffCall<Unit>` | Возвращает объект, который позволяет синхронно разлогинить по refreshToken                                   |
 
-### TinkoffCall<T>
+### TinkoffCall`<T>`
 
 Объект, который позволяет выполнить долгий запрос синхронно и получить `T`  или отменить этот запрос.
 
