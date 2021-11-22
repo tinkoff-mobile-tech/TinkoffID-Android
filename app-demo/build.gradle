@@ -37,6 +37,7 @@ dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     api "androidx.appcompat:appcompat:${appCompatVersion}"
     api "androidx.constraintlayout:constraintlayout:${constraintLayoutVersion}"
+    api "com.google.android.material:material:${material}"
     //rx
     api "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     api "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"

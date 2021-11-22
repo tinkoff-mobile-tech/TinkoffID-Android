@@ -7,12 +7,13 @@ ext {
     authCode = VERSION_CODE.toInteger()
     authVersion = getVersionName(VERSION_NAME)
 
-    constraintLayoutVersion = '2.0.4'
+    constraintLayoutVersion = '2.1.2'
     rxJavaVersion = '2.2.20'
     rxAndroidVersion = '2.1.1'
 
     kotlinVersion = '1.4.21'
     appCompatVersion = '1.2.0'
+    material = '1.4.0'
     okHttpVersion = '4.9.0'
 
     detektVersion = '1.15.0'

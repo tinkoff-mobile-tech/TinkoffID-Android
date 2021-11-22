@@ -20,12 +20,15 @@ class PartnerActivity : AppCompatActivity() {
         .build()
 
     private val redirectUri = "mobile://"
+    private val clientId = "test-partner-mobile"
 
     private lateinit var tinkoffPartnerAuth: TinkoffIdAuth
 
     private val partnerPresenter by lazy(NONE) { PartnerPresenter(tinkoffPartnerAuth, this) }
     private val clientIdEditText by lazy(NONE) { findViewById<EditText>(R.id.etClientId) }
-    private val buttonSaveClientId by lazy(NONE) { findViewById<Button>(R.id.buttonSaveClientId) }
+    private val redirectUriEditText by lazy(NONE) { findViewById<EditText>(R.id.etRedirectUri) }
+
+    private val reset by lazy(NONE) { findViewById<Button>(R.id.reset) }
     private val compactButtonTinkoffAuth by lazy(NONE) { findViewById<Button>(R.id.compactButtonTinkoffAuth) }
     private val standardButtonTinkoffAuth by lazy(NONE) { findViewById<Button>(R.id.standardButtonTinkoffAuth) }
     private val buttonUpdateToken by lazy(NONE) { findViewById<Button>(R.id.buttonUpdateToken) }
@@ -34,11 +37,12 @@ class PartnerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_partner)
-        tinkoffPartnerAuth = TinkoffIdAuth(applicationContext, "test-partner-mobile", redirectUri)
+        resetTinkoffIdAuth()
         intent.data?.let { partnerPresenter.getToken(it) }
 
         val clickListener = View.OnClickListener {
-            if (tinkoffPartnerAuth.isTinkoffAuthAvailable()) {
+            if (tinkoffPartnerAuth.isTinkoffAuthAvailable() && isDataCorrect()) {
+                initTinkoffIdAuth()
                 val intent = tinkoffPartnerAuth.createTinkoffAuthIntent(partnerUri)
                 startActivity(intent)
             }
@@ -54,8 +58,41 @@ class PartnerActivity : AppCompatActivity() {
             partnerPresenter.revokeToken()
         }
 
-        buttonSaveClientId.setOnClickListener {
-            tinkoffPartnerAuth = TinkoffIdAuth(applicationContext, clientIdEditText.text.toString(), redirectUri)
+        reset.setOnClickListener {
+            resetTinkoffIdAuth()
+        }
+    }
+
+    private fun initTinkoffIdAuth() {
+        val clientId = clientIdEditText.text.toString()
+        val redirectUri = redirectUriEditText.text.toString()
+
+        tinkoffPartnerAuth = TinkoffIdAuth(
+            applicationContext,
+            clientId = clientId,
+            redirectUri = redirectUri
+        )
+    }
+
+    private fun resetTinkoffIdAuth() {
+        clientIdEditText.error = null
+        clientIdEditText.setText(clientId)
+        redirectUriEditText.error = null
+        redirectUriEditText.setText(redirectUri)
+        initTinkoffIdAuth()
+    }
+
+    private fun isDataCorrect(): Boolean {
+        return when {
+            clientIdEditText.text.isEmpty() -> {
+                clientIdEditText.error = getString(R.string.partner_auth_edit_text_empty_error_description)
+                false
+            }
+            redirectUriEditText.text.isEmpty() -> {
+                redirectUriEditText.error = getString(R.string.partner_auth_edit_text_empty_error_description)
+                false
+            }
+            else -> true
         }
     }
 
