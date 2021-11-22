@@ -4,6 +4,9 @@
 #### Changes
 #### Additions
 
+- Added redirect_uri configuration logic
+
+
 ## 1.0.0
 
 #### Fixed
