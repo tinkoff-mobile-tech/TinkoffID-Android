@@ -34,8 +34,8 @@ import java.io.IOException
  */
 internal class TinkoffPartnerApiService(private val api: TinkoffIdApi) {
 
-    fun getToken(code: String, codeVerifier: String, clientId: String): TinkoffCall<TinkoffTokenPayload> {
-        return api.getToken(code, codeVerifier, clientId).wrapTokenToTinkoffCall()
+    fun getToken(code: String, codeVerifier: String, clientId: String, redirectUri: String): TinkoffCall<TinkoffTokenPayload> {
+        return api.getToken(code, codeVerifier, clientId, redirectUri).wrapTokenToTinkoffCall()
     }
 
     fun refreshToken(refreshToken: String, clientId: String): TinkoffCall<TinkoffTokenPayload> {
