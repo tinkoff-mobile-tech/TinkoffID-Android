@@ -6,43 +6,60 @@
     android:layout_height="match_parent"
     tools:context=".PartnerActivity">
 
-    <TextView
-        android:id="@+id/textViewClientIdHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/partner_auth_client_id"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/etClientId"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/clientIdInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/partner_auth_test_partner_mobile"
-        app:layout_constraintEnd_toStartOf="@+id/buttonSaveClientId"
+        android:hint="@string/partner_auth_client_id"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewClientIdHeader" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etClientId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/redirectUriInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/partner_auth_redirect_url"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clientIdInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etRedirectUri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/buttonSaveClientId"
-        android:layout_width="wrap_content"
+        android:id="@+id/reset"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/partner_auth_save"
-        app:layout_constraintBottom_toTopOf="@+id/compactButtonLabel"
+        android:text="@string/partner_auth_reset"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/etClientId" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/redirectUriInputLayout"/>
 
     <TextView
         android:id="@+id/compactButtonLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/partner_auth_compact"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etClientId" />
+        app:layout_constraintTop_toBottomOf="@+id/reset" />
 
     <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
         android:id="@+id/compactButtonTinkoffAuth"

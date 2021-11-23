@@ -3,9 +3,10 @@
     <string name="partner_auth_refresh_btn">Refresh token</string>
     <string name="partner_auth_revoke_btn">Revoke token</string>
     <string name="partner_auth_client_id" translatable="false">ClientId</string>
-    <string name="partner_auth_test_partner_mobile" translatable="false">test-partner-mobile</string>
-    <string name="partner_auth_save" translatable="false">Save</string>
+    <string name="partner_auth_redirect_url" translatable="false">RedirectUrl</string>
+    <string name="partner_auth_reset" translatable="false">Reset</string>
     <string name="partner_auth_compact" translatable="false">compact</string>
     <string name="partner_auth_standard" translatable="false">standard</string>
+    <string name="partner_auth_edit_text_empty_error_description" translatable="false">Сannot be empty</string>
 
 </resources>
