@@ -19,4 +19,14 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="ru.tinkoff.partner.TINKOFF_APP" />
+            <data
+                android:scheme="https"
+                android:host="www.tinkoff.ru" />
+        </intent>
+    </queries>
+
 </manifest>
