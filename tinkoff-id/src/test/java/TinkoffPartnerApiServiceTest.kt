@@ -54,7 +54,7 @@ public class TinkoffPartnerApiServiceTest {
 
     @Test
     public fun testValidTokenGet() {
-        val call = tinkoffPartnerApiService.getToken("test", "test", "test")
+        val call = tinkoffPartnerApiService.getToken("test", "test", "test", "test")
         testTokenRequestResponsesValidation(call)
     }
 
@@ -69,7 +69,7 @@ public class TinkoffPartnerApiServiceTest {
                 }""".trimIndent()
             )
         mockWebServer.enqueue(response)
-        val call = tinkoffPartnerApiService.getToken("test", "test", "test")
+        val call = tinkoffPartnerApiService.getToken("test", "test", "test", "test")
         val exception = assertThrows(TinkoffRequestException::class.java) { call.getResponse() }
         assertThat(exception.errorMessage).isNotNull()
         val message = requireNotNull(exception.errorMessage)
@@ -121,7 +121,7 @@ public class TinkoffPartnerApiServiceTest {
     private companion object {
 
         private const val ACCESS_TOKEN = "DR_Y7iifsfsdfRKGuXtMovTocYD4MnA7RxhwAMX3ydRKeDOYFls4a1S4IC1Daq7poz2k2AoJIOICsgA"
-        private const val EXPIRES_IN = "1834"
+        private const val EXPIRES_IN = 1834
         private const val ID_TOKEN = "yJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ"
         private const val REFRESH_TOKEN = "OuyFBEMG2yhjh0KHNIbeS8sb0VmBmdqd08rY52ZniOyDmCnn"
 

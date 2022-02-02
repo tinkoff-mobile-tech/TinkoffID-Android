@@ -34,7 +34,7 @@ import ru.tinkoff.core.tinkoffId.TinkoffIdStatusCode
 public class TinkoffIdAuthTest {
 
     private var context: Context = ApplicationProvider.getApplicationContext()
-    public val tinkoffAuth: TinkoffIdAuth = TinkoffIdAuth(context, CLIENT_ID)
+    public val tinkoffAuth: TinkoffIdAuth = TinkoffIdAuth(context, CLIENT_ID, REDIRECT_URL)
     private val testUri: Uri = Uri.Builder()
         .scheme("https")
         .authority("www.partner.com")
@@ -65,6 +65,7 @@ public class TinkoffIdAuthTest {
     private companion object {
 
         private const val CLIENT_ID = "testClientId"
+        private const val REDIRECT_URL = "mobile://redirectUrl"
         private const val QUERY_PARAMETER_AUTH_STATUS_CODE = "auth_status_code"
 
         private const val AUTH_STATUS_CODE_SUCCESS = "success"
