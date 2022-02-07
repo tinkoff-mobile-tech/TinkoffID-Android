@@ -1,5 +1,5 @@
 apply from: '../gradle/plugin/android.gradle'
-apply from: '../gradle/plugin/publish.gradle'
+apply from: '../gradle/plugin/publish-lib.gradle'
 
 android {
 
