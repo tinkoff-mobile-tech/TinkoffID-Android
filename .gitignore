@@ -1,7 +1,6 @@
 .gradle/
-.idea/*.xml
-.idea/caches
-.idea/libraries
+.idea
+!.idea/codeStyles
 build/
 .DS_Store
 
