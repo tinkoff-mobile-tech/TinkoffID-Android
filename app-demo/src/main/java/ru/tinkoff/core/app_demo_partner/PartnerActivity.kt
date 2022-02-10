@@ -34,6 +34,7 @@ class PartnerActivity : AppCompatActivity() {
     private val buttonUpdateToken by lazy(NONE) { findViewById<Button>(R.id.buttonUpdateToken) }
     private val buttonRevokeToken by lazy(NONE) { findViewById<Button>(R.id.buttonRevokeToken) }
 
+    @Suppress("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_partner)
