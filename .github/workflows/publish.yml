@@ -1,0 +1,14 @@
+name: publish
+
+on:
+  push:
+    tags:
+      - '\d+\.\d+\.\d+'
+
+
+jobs:
+  publish:
+    uses: tinkoff-mobile-tech/workflow/.github/workflows/publish_android_aar.yml@main
+    secrets:
+      gpg_key: ${{ secrets.GPG_KEY }}
+      sign_ossrh_gradle_properties: ${{ secrets.SIGN_OSSRH_GRADLE_PROPERTIES }}
