@@ -7,4 +7,4 @@ on:
 
 jobs:
   check:
-    uses: tinkoff-mobile-tech/workflow/.github/workflows/android_merge_request.yml@main
+    uses: tinkoff-mobile-tech/workflows/.github/workflows/android_lib.merge_request.yml@v1
