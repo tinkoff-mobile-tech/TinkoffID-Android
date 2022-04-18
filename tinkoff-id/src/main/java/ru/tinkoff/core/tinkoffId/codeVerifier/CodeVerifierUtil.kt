@@ -50,7 +50,7 @@ internal object CodeVerifierUtil {
     /**
      * The default entropy (in bytes) used for the code verifier.
      */
-    const val DEFAULT_CODE_VERIFIER_ENTROPY = 64
+    private const val DEFAULT_CODE_VERIFIER_ENTROPY = 64
 
     /**
      * Base64 encoding settings used for generated code verifiers.

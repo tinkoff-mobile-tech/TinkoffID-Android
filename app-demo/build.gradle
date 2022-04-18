@@ -3,19 +3,15 @@ apply plugin: 'kotlin-android'
 apply from: rootProject.file('gradle/versions.gradle')
 apply from: rootProject.file('gradle/plugin/detekt.gradle')
 
-def getBuildVersionCode = (project.findProperty("buildCounter") == null)
-        ? 1
-        : Integer.parseInt(project.findProperty("buildCounter"))
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
         multiDexEnabled = true
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode getBuildVersionCode
-        versionName authVersion
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode rootProject.authCode
+        versionName rootProject.authVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -34,10 +30,10 @@ android {
 
 dependencies {
     api project(':tinkoff-id')
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     api "androidx.appcompat:appcompat:${appCompatVersion}"
     api "androidx.constraintlayout:constraintlayout:${constraintLayoutVersion}"
-    api "com.google.android.material:material:${material}"
+    api "com.google.android.material:material:${materialVersion}"
     //rx
     api "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     api "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"

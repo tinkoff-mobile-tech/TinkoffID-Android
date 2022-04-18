@@ -44,14 +44,14 @@ internal class TinkoffPartnerApiService(private val api: TinkoffIdApi) {
 
     fun revokeAccessToken(accessToken: String, clientId: String): TinkoffCall<Unit> {
         return api.revokeToken(accessToken, TOKEN_HINT_TYPE_ACCESS_TOKEN, clientId).wrapToTinkoffCall(
-            { Unit },
+            { },
             { getRevokeErrorType(it) }
         )
     }
 
     fun revokeRefreshToken(refreshToken: String, clientId: String): TinkoffCall<Unit> {
         return api.revokeToken(refreshToken, TOKEN_HINT_TYPE_REFRESH_TOKEN, clientId).wrapToTinkoffCall(
-            { Unit },
+            { },
             { getRevokeErrorType(it) }
         )
     }

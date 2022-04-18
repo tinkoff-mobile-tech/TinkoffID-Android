@@ -2,7 +2,6 @@ apply from: '../gradle/plugin/android.gradle'
 apply from: '../gradle/plugin/publish-lib.gradle'
 
 android {
-
     resourcePrefix 'tinkoff_id_'
 
     testOptions {
@@ -18,7 +17,7 @@ dependencies {
     testImplementation "com.google.truth:truth:$truthVersion"
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation "androidx.test:core:$testCoreVersion"
-    testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserverVersion"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$okHttpVersion"
 }
 
 repositories {

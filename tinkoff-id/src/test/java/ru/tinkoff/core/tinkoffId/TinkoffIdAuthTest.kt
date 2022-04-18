@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+package ru.tinkoff.core.tinkoffId
+
 import android.content.Context
 import android.net.Uri
 import android.os.Build
@@ -23,8 +25,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import ru.tinkoff.core.tinkoffId.TinkoffIdAuth
-import ru.tinkoff.core.tinkoffId.TinkoffIdStatusCode
 
 /**
  * @author Stanislav Mukhametshin
@@ -34,7 +34,7 @@ import ru.tinkoff.core.tinkoffId.TinkoffIdStatusCode
 public class TinkoffIdAuthTest {
 
     private var context: Context = ApplicationProvider.getApplicationContext()
-    public val tinkoffAuth: TinkoffIdAuth = TinkoffIdAuth(context, CLIENT_ID, REDIRECT_URL)
+    private val tinkoffAuth: TinkoffIdAuth = TinkoffIdAuth(context, CLIENT_ID, REDIRECT_URL)
     private val testUri: Uri = Uri.Builder()
         .scheme("https")
         .authority("www.partner.com")
