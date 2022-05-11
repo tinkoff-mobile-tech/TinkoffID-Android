@@ -93,7 +93,7 @@ afterEvaluate {
     }
 
     task androidJavadocsJar(type: Jar, dependsOn: dokkaJavadoc) {
-        archiveClassifier.set('javadoc')
+        archiveClassifier.set("javadoc")
         from dokkaJavadoc.outputDirectory
     }
 

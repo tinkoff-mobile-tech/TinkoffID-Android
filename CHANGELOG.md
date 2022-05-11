@@ -2,7 +2,7 @@
 
 #### Fixed
 #### Changes
-- [app-demo][tinkoff-id] bump up API versions (minSdk to 23, targetSdk and compileSdk to 31) and dependencies versions MC-5659
+- [app-demo][tinkoff-id] bump up API versions (targetSdk and compileSdk to 31) and dependencies versions MC-5659
 #### Additions
 
 ## 1.0.1

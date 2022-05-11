@@ -19,6 +19,7 @@ package ru.tinkoff.core.tinkoffId.ui
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.os.Build
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -162,17 +163,32 @@ public class TinkoffIdSignInButton @JvmOverloads constructor(
     }
 
     private fun createStaticLayout(textWidth: Int, alignment: Layout.Alignment): StaticLayout {
-        return StaticLayout.Builder.obtain(
-            text,
-            0,
-            text.length,
-            textPaint,
-            textWidth
-        )
-            .setAlignment(alignment)
-            .setLineSpacing(0f, 1f)
-            .setIncludePad(false)
-            .build()
+        val spacingMultiplier = 1f
+        val spacingAddition = 0f
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            StaticLayout.Builder.obtain(
+                text,
+                0,
+                text.length,
+                textPaint,
+                textWidth
+            )
+                .setAlignment(alignment)
+                .setLineSpacing(spacingAddition, spacingMultiplier)
+                .setIncludePad(false)
+                .build()
+        } else {
+            StaticLayout(
+                text,
+                textPaint,
+                textWidth,
+                alignment,
+                spacingMultiplier,
+                spacingAddition,
+                false
+            )
+        }
     }
 
     private fun Int.dpToPx() = TypedValue.applyDimension(

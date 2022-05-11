@@ -72,7 +72,8 @@ public class TinkoffIdAuth(
      * @return true if we can open Tinkoff application
      */
     public fun isTinkoffAuthAvailable(): Boolean {
-        return AppLinkUtil.isPossibleToHandleAppLink(applicationContext) &&
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                AppLinkUtil.isPossibleToHandleAppLink(applicationContext) &&
                 CodeVerifierUtil.getCodeVerifierChallengeMethod() != CodeVerifierUtil.CODE_CHALLENGE_METHOD_PLAIN
     }
 
