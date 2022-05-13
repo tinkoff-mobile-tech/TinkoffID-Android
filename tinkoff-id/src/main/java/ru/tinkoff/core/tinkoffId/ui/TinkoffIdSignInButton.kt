@@ -25,6 +25,7 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.TypedValue
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import ru.tinkoff.core.tinkoffId.R
@@ -32,6 +33,7 @@ import kotlin.math.roundToInt
 
 /**
  * @author Dmitry Naymushin
+ *
  * A button with an icon and a text which can be used for partner authorization.
  * Right now the icon is not customizable as well as the text (although it's open for i18n)
  * Text should represent a single line string.
@@ -65,7 +67,7 @@ public class TinkoffIdSignInButton @JvmOverloads constructor(
     private val horizontalPadding = HORIZONTAL_PADDING_DP.dpToPx()
     private val iconTextOffset = ICON_TEXT_OFFSET_DP.dpToPx()
 
-    private val icon = ContextCompat.getDrawable(context, R.drawable.tinkoff_id_tinkoff_logo)
+    private val icon = AppCompatResources.getDrawable(context, R.drawable.tinkoff_id_tinkoff_logo)
     private val text = context.getString(R.string.tinkoff_id_sign_in)
 
     private val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -88,7 +90,7 @@ public class TinkoffIdSignInButton @JvmOverloads constructor(
                 isCompact = getInt(R.styleable.TinkoffIdSignInButton_tinkoff_id_size, SIZE_STANDARD) == SIZE_COMPACT
                 recycle()
             }
-        background = ContextCompat.getDrawable(context, R.drawable.tinkoff_id_sign_in_button_background)
+        background = AppCompatResources.getDrawable(context, R.drawable.tinkoff_id_sign_in_button_background)
     }
 
     // this is done here intentionally to ignore setting of a text to a custom value

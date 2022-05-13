@@ -2,9 +2,8 @@ package ru.tinkoff.core.app_demo_partner
 
 import android.net.Uri
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -20,7 +19,7 @@ import ru.tinkoff.core.tinkoffId.TinkoffTokenPayload
 class PartnerPresenter(
     private val tinkoffPartnerAuth: TinkoffIdAuth,
     private val partnerActivity: PartnerActivity
-) : LifecycleObserver {
+) : DefaultLifecycleObserver {
 
     private val compositeDisposable = CompositeDisposable()
     private var tokenPayload: TinkoffTokenPayload? = null
@@ -98,8 +97,8 @@ class PartnerPresenter(
             }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun dispose() {
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
         compositeDisposable.clear()
     }
 

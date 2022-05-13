@@ -4,13 +4,12 @@ def useMavenLocal = project.hasProperty("useMavenLocal")
 print("useMavenLocal = " + useMavenLocal)
 
 buildscript {
-
     apply from: 'gradle/versions.gradle'
 
     repositories {
         // mavenLocal() // Uncomment when testing on Maven local repository
         google()
-        jcenter()
+        mavenCentral()
         maven { url 'https://plugins.gradle.org/m2/' }
         gradlePluginPortal()
     }
@@ -26,7 +25,7 @@ allprojects {
     repositories {
         if (useMavenLocal) mavenLocal()
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 

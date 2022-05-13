@@ -49,6 +49,7 @@ android {
             configureEach {
                 includeNonPublic.set(false)
                 noAndroidSdkLink.set(false)
+                suppressInheritedMembers.set(true)
             }
         }
     }

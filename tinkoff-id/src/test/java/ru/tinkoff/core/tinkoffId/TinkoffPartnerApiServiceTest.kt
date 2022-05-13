@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+package ru.tinkoff.core.tinkoffId
+
 import android.os.Build
 import com.google.common.truth.Truth.assertThat
 import okhttp3.OkHttpClient
@@ -26,9 +28,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import ru.tinkoff.core.tinkoffId.TinkoffCall
-import ru.tinkoff.core.tinkoffId.TinkoffPartnerApiService
-import ru.tinkoff.core.tinkoffId.TinkoffTokenPayload
 import ru.tinkoff.core.tinkoffId.api.TinkoffIdApi
 import ru.tinkoff.core.tinkoffId.error.TinkoffRequestException
 import ru.tinkoff.core.tinkoffId.error.TinkoffTokenErrorConstants
