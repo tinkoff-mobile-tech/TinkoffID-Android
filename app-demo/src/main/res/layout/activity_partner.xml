@@ -69,6 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/compactButtonLabel"
+        app:tinkoff_id_style="black"
         app:tinkoff_id_size="compact" />
 
     <TextView
@@ -90,7 +91,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/standardButtonLabel"
-        app:tinkoff_id_size="standard" />
+        app:tinkoff_id_size="standard"
+        app:tinkoff_id_style="yellow"
+        app:tinkoff_id_text="Войти с Tinkoff"
+        app:tinkoff_id_cashback="15"/>
 
     <Button
         android:id="@+id/buttonUpdateToken"

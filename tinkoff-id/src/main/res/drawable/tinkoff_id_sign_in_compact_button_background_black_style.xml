@@ -15,19 +15,20 @@
   ~ limitations under the License.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
-
-    <declare-styleable name="TinkoffIdSignInButton" tools:ignore="ResourceName">
-        <attr name="tinkoff_id_size" format="enum">
-            <enum name="standard" value="0" />
-            <enum name="compact" value="1" />
-        </attr>
-        <attr name="tinkoff_id_style" format="enum">
-            <enum name="yellow" value="0" />
-            <enum name="gray" value="1" />
-            <enum name="black" value="2" />
-        </attr>
-        <attr name="tinkoff_id_cashback" format="string"/>
-        <attr name="tinkoff_id_text" format="string"/>
-    </declare-styleable>
-</resources>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/tinkoff_id_button_pressed_black_style">
+    <item>
+        <selector>
+            <item android:state_enabled="false">
+                <shape android:shape="oval">
+                    <solid android:color="@color/tinkoff_id_button_disabled_black_style" />
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="@color/tinkoff_id_button_black_style" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+</ripple>

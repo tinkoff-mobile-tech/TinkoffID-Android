@@ -18,5 +18,8 @@
 <resources>
 
     <dimen name="tinkoff_id_sign_in_button_corner_radius">12dp</dimen>
+    <dimen name="tinkoff_id_cashback_corner_radius">14dp</dimen>
+    <dimen name="tinkoff_id_vertical_cashback_padding">2dp</dimen>
+    <dimen name="tinkoff_id_horizontal_cashback_padding">6dp</dimen>
 
 </resources>

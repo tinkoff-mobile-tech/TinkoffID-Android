@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ru.tinkoff.core.tinkoffId.TinkoffIdAuth
+import ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
 import kotlin.LazyThreadSafetyMode.NONE
 
 class PartnerActivity : AppCompatActivity() {
@@ -29,8 +30,8 @@ class PartnerActivity : AppCompatActivity() {
     private val redirectUriEditText by lazy(NONE) { findViewById<EditText>(R.id.etRedirectUri) }
 
     private val reset by lazy(NONE) { findViewById<Button>(R.id.reset) }
-    private val compactButtonTinkoffAuth by lazy(NONE) { findViewById<Button>(R.id.compactButtonTinkoffAuth) }
-    private val standardButtonTinkoffAuth by lazy(NONE) { findViewById<Button>(R.id.standardButtonTinkoffAuth) }
+    private val compactButtonTinkoffAuth by lazy(NONE) { findViewById<TinkoffIdSignInButton>(R.id.compactButtonTinkoffAuth) }
+    private val standardButtonTinkoffAuth by lazy(NONE) { findViewById<TinkoffIdSignInButton>(R.id.standardButtonTinkoffAuth) }
     private val buttonUpdateToken by lazy(NONE) { findViewById<Button>(R.id.buttonUpdateToken) }
     private val buttonRevokeToken by lazy(NONE) { findViewById<Button>(R.id.buttonRevokeToken) }
 
