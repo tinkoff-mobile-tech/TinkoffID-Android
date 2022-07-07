@@ -40,6 +40,49 @@ import kotlin.math.max
 import kotlin.math.roundToInt
 
 /**
+ * A button with an icon, text, cashback and other customization options that can be used to partner authorization.
+ *
+ * ## Requirements
+ * Text should represent a single line string.
+ * This button should only be used with the wrap_content option for its layout_height attribute and
+ * the wrap_content / match_parent / match_constraint option for the layout_width attribute.
+ *
+ * ## Usage
+ * ```xml
+ * <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
+ *     android:layout_width="match_parent"
+ *     android:layout_height="wrap_content"
+ *     app:tinkoff_id_size="standard"
+ *     app:tinkoff_id_style="gray"
+ *     app:tinkoff_id_text="Sing in with Tinkoff"
+ *     app:tinkoff_id_cashback="15" />
+ * ```
+ *
+ * ## View attributes:
+ * - `tinkoff_id_size` - way to customize the button size, one of the options - "standard" (default) / "compact"
+ * - `tinkoff_id_text` - text to display on the button. Used only if `tinkoff_id_size` attribute is standard.
+ * - `tinkoff_id_cashback` - value of cashback in the template R.string.tinkoff_id_cashback. Used only if `tinkoff_id_size` attribute is standard.
+ * - `tinkoff_id_style` - special button style, one of the options - "yellow" (default) / "gray" / "black"
+ *
+ * ## Behavior description
+ * ### "compact" option
+ * Width and height of the button are 56dp, the button becomes round,
+ * inside the Tinkoff logo bounded by a vertical paddings of 12dp and logo width to height ratio.
+ *
+ * ### "standard" option
+ * Height could be anything between 40dp and 56dp, depending on the constraints
+ * passed from the parent view.
+ *
+ * As for the width, if cashback isn't specified, then it depends on the
+ * constraints passed from the parent view, but not less than enough to fit the content. In case
+ * width of a button is more than enough to fit its content, it (the content) is centered horizontally.
+ *
+ * If the cashback is specified, then the width takes up exactly
+ * as much as is necessary to display the content.
+ *
+ * Size of the icon and size of text fonts increase following the height increase.
+ * The paddings between and inside the elements are fixed.
+ *
  * @author k.voskrebentsev
  */
 public class TinkoffIdSignInButton @JvmOverloads constructor(
