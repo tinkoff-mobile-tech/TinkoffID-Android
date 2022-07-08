@@ -93,8 +93,8 @@
         app:layout_constraintTop_toBottomOf="@id/standardButtonLabel"
         app:tinkoff_id_size="standard"
         app:tinkoff_id_style="yellow"
-        app:tinkoff_id_text="Войти с Tinkoff"
-        app:tinkoff_id_cashback="15"/>
+        app:tinkoff_id_text="@string/partner_auth_sign_in_button_text"
+        app:tinkoff_id_cashback="@string/partner_auth_sign_in_button_cashback"/>
 
     <Button
         android:id="@+id/buttonUpdateToken"

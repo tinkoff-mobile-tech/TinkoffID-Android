@@ -37,4 +37,8 @@ dependencies {
     //rx
     api "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     api "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    //tests
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test:rules:$testRuleVersion"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:$uiautomatorVersion"
 }
