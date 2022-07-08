@@ -83,7 +83,7 @@ import kotlin.math.roundToInt
  * Size of the icon and size of text fonts increase following the height increase.
  * The paddings between and inside the elements are fixed.
  *
- * @author k.voskrebentsev
+ * @author Dmitry Naymushin, Kirill Voskrebentsev
  */
 public class TinkoffIdSignInButton @JvmOverloads constructor(
     context: Context,
