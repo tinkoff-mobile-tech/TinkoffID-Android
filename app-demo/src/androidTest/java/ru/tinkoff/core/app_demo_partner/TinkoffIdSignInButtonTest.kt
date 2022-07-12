@@ -39,7 +39,7 @@ class TinkoffIdSignInButtonTest : AndroidJUnitRunner() {
     @Test
     fun testStandardButtonTextUpdate() {
         runOnMainThread {
-            standardButton.text = SOME_TEXT
+            standardButton.title = SOME_TEXT
         }
 
         checkPresenceTextOnScreen(SOME_TEXT)
@@ -48,7 +48,7 @@ class TinkoffIdSignInButtonTest : AndroidJUnitRunner() {
     @Test
     fun testStandardButtonTextAbsence() {
         runOnMainThread {
-            standardButton.text = EMPTY_TEXT
+            standardButton.title = EMPTY_TEXT
         }
 
         checkAbsenceTextOnScreen(originalText)
@@ -56,25 +56,25 @@ class TinkoffIdSignInButtonTest : AndroidJUnitRunner() {
 
     @Test
     fun testStandardButtonCashbackPresence() {
-        checkPresenceTextOnScreen(wrapCashbackInTemplate(originalCashback))
+        checkPresenceTextOnScreen(wrapBadge(originalCashback))
     }
 
     @Test
     fun testStandardButtonCashbackUpdate() {
         runOnMainThread {
-            standardButton.cashback = SOME_TEXT
+            standardButton.badgeText = SOME_TEXT
         }
 
-        checkPresenceTextOnScreen(wrapCashbackInTemplate(SOME_TEXT))
+        checkPresenceTextOnScreen(wrapBadge(SOME_TEXT))
     }
 
     @Test
     fun testStandardButtonCashbackAbsence() {
         runOnMainThread {
-            standardButton.cashback = EMPTY_TEXT
+            standardButton.badgeText = EMPTY_TEXT
         }
 
-        checkAbsenceTextOnScreen(wrapCashbackInTemplate(originalCashback))
+        checkAbsenceTextOnScreen(wrapBadge(originalCashback))
     }
 
     private fun checkPresenceTextOnScreen(text: String) {
@@ -83,7 +83,7 @@ class TinkoffIdSignInButtonTest : AndroidJUnitRunner() {
     private fun checkAbsenceTextOnScreen(text: String) {
         assertTrue("Found text \"$text\" on screen", !UiDevice.getInstance(getInstrumentation()).hasObject(By.textContains(text)))
     }
-    private fun wrapCashbackInTemplate(cashback: String) = getInstrumentation().targetContext.getString(ru.tinkoff.core.tinkoffId.R.string.tinkoff_id_cashback, cashback)
+    private fun wrapBadge(cashback: String) = ""
     private fun runOnMainThread(block: () -> Unit) {
         activityRule.runOnUiThread(block)
     }
@@ -94,7 +94,7 @@ class TinkoffIdSignInButtonTest : AndroidJUnitRunner() {
 
         private const val standardButtonId = R.id.standardButtonTinkoffAuth
 
-        private val originalText = getInstrumentation().targetContext.resources.getString(R.string.partner_auth_sign_in_button_text)
-        private val originalCashback = getInstrumentation().targetContext.resources.getString(R.string.partner_auth_sign_in_button_cashback)
+        private val originalText = getInstrumentation().targetContext.resources.getString(R.string.partner_auth_sign_in_button_title)
+        private val originalCashback = getInstrumentation().targetContext.resources.getString(R.string.partner_auth_sign_in_button_badge)
     }
 }

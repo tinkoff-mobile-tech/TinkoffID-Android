@@ -17,7 +17,6 @@
 
 <resources>
 
-    <!--partner auth cashback template-->
-    <string name="tinkoff_id_cashback">%1$s%% cashback</string>
+    <string name="tinkoff_id_tinkoff_text">Tinkoff</string>
 
 </resources>

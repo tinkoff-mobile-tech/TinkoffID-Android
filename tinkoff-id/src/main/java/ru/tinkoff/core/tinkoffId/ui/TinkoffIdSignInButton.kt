@@ -17,71 +17,59 @@
 package ru.tinkoff.core.tinkoffId.ui
 
 import android.content.Context
-import android.graphics.Paint
-import android.os.Build
-import android.text.Layout
-import android.text.StaticLayout
-import android.text.TextPaint
+import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.RippleDrawable
+import android.text.SpannableString
+import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+import android.text.style.StyleSpan
 import android.util.AttributeSet
-import android.util.TypedValue
+import android.util.TypedValue.COMPLEX_UNIT_PX
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
+import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.FontRes
+import androidx.annotation.Px
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.res.ResourcesCompat
 import ru.tinkoff.core.tinkoffId.R
-import kotlin.math.max
 import kotlin.math.roundToInt
+
+internal typealias TinkoffDrawable = R.drawable
+internal typealias TinkoffColor = R.color
+internal typealias TinkoffDimen = R.dimen
 
 /**
  * A button with an icon, text, cashback and other customization options that can be used to partner authorization.
  *
- * ## Requirements
- * Text should represent a single line string.
- * This button should only be used with the wrap_content option for its layout_height attribute and
- * the wrap_content / match_parent / match_constraint option for the layout_width attribute.
- *
  * ## Usage
  * ```xml
  * <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
- *     android:layout_width="match_parent"
- *     android:layout_height="wrap_content"
- *     app:tinkoff_id_size="standard"
- *     app:tinkoff_id_style="gray"
- *     app:tinkoff_id_text="Sing in with Tinkoff"
- *     app:tinkoff_id_cashback="15" />
+ *     android:id="@+id/standardButtonTinkoffAuth"
+ *     android:layout_width="wrap_content"
+ *     android:layout_height="60dp"
+ *     app:tinkoff_id_compact="false"
+ *     app:tinkoff_id_title="Sign in with"
+ *     app:tinkoff_id_badge="Cashback up to 5%"
+ *     app:tinkoff_id_style="yellow"
+ *     app:tinkoff_id_corner_radius="8dp"
+ *     app:tinkoff_id_font="@font/neue_haas_unica_w1g"/>
  * ```
  *
  * ## View attributes:
- * - `tinkoff_id_size` - way to customize the button size, one of the options - "standard" (default) / "compact"
- * - `tinkoff_id_text` - text to display on the button. Used only if `tinkoff_id_size` attribute is standard.
- * - `tinkoff_id_cashback` - value of cashback in the template R.string.tinkoff_id_cashback. Used only if `tinkoff_id_size` attribute is standard.
+ * - `tinkoff_id_compact` - way to customize the button size, one of the options - false (default) / true
+ * - `tinkoff_id_badge` - additional text to attract attention. Used only if `tinkoff_id_compact` attribute is false.
+ * - `tinkoff_id_title` - text to display on the button together with "Tinkoff". Used only if `tinkoff_id_compact` attribute is false.
  * - `tinkoff_id_style` - special button style, one of the options - "yellow" (default) / "gray" / "black"
- *
- * ## Behavior description
- * ### "compact" option
- * Width and height of the button are 56dp, the button becomes round,
- * inside the Tinkoff logo bounded by a vertical paddings of 12dp and logo width to height ratio.
- *
- * ### "standard" option
- * Height could be anything between 40dp and 56dp, depending on the constraints
- * passed from the parent view.
- *
- * As for the width, if cashback isn't specified, then it depends on the
- * constraints passed from the parent view, but not less than enough to fit the content. In case
- * width of a button is more than enough to fit its content, it (the content) is centered horizontally.
- *
- * If the cashback is specified, then the width takes up exactly
- * as much as is necessary to display the content.
- *
- * Size of the icon and size of text fonts increase following the height increase.
- * The paddings between and inside the elements are fixed.
+ * - `tinkoff_id_corner_radius` - radius for button corners. Used only if `tinkoff_id_compact` attribute is false.
+ * - `tinkoff_id_font` - font of the text on the button. Used only if `tinkoff_id_compact` attribute is false.
  *
  * @author Dmitry Naymushin, Kirill Voskrebentsev
  */
@@ -92,95 +80,111 @@ public class TinkoffIdSignInButton @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : ViewGroup(context, attrs, defStyle, defStyleRes)  {
 
-    public var text: CharSequence
-        get() = textView.text
+    // Customization elements
+    public var title: CharSequence?
+        get() = titleView.text
         set(value) {
-            textView.text = value
+            titleView.text = if (value.isNullOrEmpty()) {
+                SpannableString(permanentTitlePart).apply {
+                    setSpan(spannableStyleBold, 0, permanentTitlePart.length, SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
+            } else {
+                val finalValue = "$value $permanentTitlePart"
+                SpannableString(finalValue).apply {
+                    setSpan(spannableStyleBold, value.length + 1, finalValue.length, SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
+            }
             updateChildrenVisibility()
         }
-    public var cashback: CharSequence
-        get() = cashbackView.text
+
+    public var badgeText: CharSequence?
+        get() = badgeView.text
         set(value) {
-            cashbackView.text = if (value.isNotBlank()) context.getString(R.string.tinkoff_id_cashback, value) else ""
+            badgeView.text = value
             updateChildrenVisibility()
         }
+
     public var isCompact: Boolean = false
         set(value) {
             field = value
             updateChildrenVisibility()
             updateStyle()
         }
-    private var style: ButtonStyle = ButtonStyle.YELLOW
 
-    private val cashbackAvailable: Boolean
-        get() = cashback.isNotEmpty()
+    public var style: ButtonStyle = ButtonStyle.YELLOW
+        set(value) {
+            field = value
+            updateStyle()
+        }
 
-    private var textView: TextView = AppCompatTextView(context).apply {
+    @Px
+    public var cornerRadius: Int = getDimension(TinkoffDimen.tinkoff_id_default_corner_radius)
+        set(value) {
+            field = value
+            updateStyle()
+        }
+
+    public var textFont: Typeface? = getFont(R.font.neue_haas_unica_w1g)
+        set(value) {
+            field = value
+            titleView.typeface = value
+            badgeView.typeface = value
+        }
+
+    // Auxiliary elements
+    private val isBadgeState: Boolean
+        get() = !badgeText.isNullOrEmpty()
+    private var size: ButtonSize = ButtonSize.LARGE
+        set(value) {
+            field = value
+            updateSize()
+        }
+    private val permanentTitlePart = context.getString(R.string.tinkoff_id_tinkoff_text)
+    private val spannableStyleBold = StyleSpan(Typeface.BOLD)
+
+    // Internal views
+    private var titleView: TextView = AppCompatTextView(context).apply {
         gravity = Gravity.CENTER
-        typeface = ResourcesCompat.getFont(context, R.font.tinkoff_id_font_roboto_regular)
     }
-
-    private var smallIconImageView: ImageView = AppCompatImageView(context).apply {
+    private var smallLogoImageView: ImageView = AppCompatImageView(context).apply {
         scaleType = ImageView.ScaleType.CENTER_INSIDE
-        setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.tinkoff_id_tinkoff_small_logo))
     }
-
-    private var cashbackView: TextView = AppCompatTextView(context).apply {
+    private var badgeView: TextView = AppCompatTextView(context).apply {
         gravity = Gravity.CENTER
-        typeface = ResourcesCompat.getFont(context, R.font.tinkoff_id_font_roboto_regular)
+    }
+    private var logoImageView: ImageView = AppCompatImageView(context).apply {
+        scaleType = ImageView.ScaleType.FIT_CENTER
+        setImageDrawable(getDrawable(R.drawable.tinkoff_id_tinkoff_logo))
     }
 
-    private var iconImageView: ImageView = AppCompatImageView(context).apply {
-        scaleType = ImageView.ScaleType.CENTER_INSIDE
-        setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.tinkoff_id_tinkoff_logo))
-    }
-
-    private val textPaint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-        textAlign = Paint.Align.LEFT
-        typeface = ResourcesCompat.getFont(context, R.font.tinkoff_id_font_roboto_regular)
-    }
-
-    private val minHeight = MIN_HEIGHT_DP.dpToPx()
-    private val maxHeight = MAX_HEIGHT_DP.dpToPx()
-
-    private val horizontalPadding = HORIZONTAL_PADDING_DP.dpToPx()
-    private val minFontSize = MIN_FONT_SIZE_DP.dpToPx()
-    private val textFontIncrementPxPerHeightPx = (MAX_FONT_SIZE_DP - MIN_FONT_SIZE_DP) / (MAX_HEIGHT_DP - MIN_HEIGHT_DP).toFloat()
-
-    private val smallIconHeightIncrementPxPerHeightPx = (MAX_SMALL_ICON_HEIGHT_DP - MIN_SMALL_ICON_HEIGHT_DP) / (MAX_HEIGHT_DP - MIN_HEIGHT_DP).toFloat()
-    private val minSmallIconHeight = MIN_SMALL_ICON_HEIGHT_DP.dpToPx()
-    private val iconTextOffset = ICON_TEXT_OFFSET_DP.dpToPx()
-    private val smallIconBorder = SMALL_ICON_BORDER_DP.dpToPx()
-    private var smallIconHeight = minSmallIconHeight + 2 * smallIconBorder
-    private var smallIconWidth = smallIconHeight * SMALL_ICON_WIDTH_TO_HEIGHT_RATIO
-
-    private val minCashbackFontSize = MIN_CASHBACK_FONT_SIZE_DP.dpToPx()
-    private val cashbackFontIncrementPxPerHeightPx = (MAX_CASHBACK_FONT_SIZE_DP - MIN_CASHBACK_FONT_SIZE_DP) / (MAX_HEIGHT_DP - MIN_HEIGHT_DP).toFloat()
-    private val horizontalPaddingCashback = HORIZONTAL_PADDING_CASHBACK_DP.dpToPx()
-    private val iconCashbackOffset = ICON_CASHBACK_OFFSET_DP.dpToPx()
-    private val horizontalPaddingInCashback = context.resources.getDimension(R.dimen.tinkoff_id_horizontal_cashback_padding)
-    private val verticalPaddingInCashback = context.resources.getDimension(R.dimen.tinkoff_id_vertical_cashback_padding)
-
-    private var iconHeight = ICON_HEIGHT_DP.dpToPx()
-    private var iconWidth = ICON_WIDTH_DP.roundToInt().dpToPx()
+    // Sizes and paddings of views
+    private val minHeight = getDimension(ButtonSize.SMALL.minHeight)
+    private val compactVerticalPadding = getDimension(TinkoffDimen.tinkoff_id_compact_vertical_padding)
+    private val compactHorizontalPadding = getDimension(TinkoffDimen.tinkoff_id_compact_horizontal_padding)
+    private val smallLogoBorder = getDimension(TinkoffDimen.tinkoff_id_small_logo_border)
+        get() = if (!isCompact && style == ButtonStyle.BLACK) field else 0
+    private var minVerticalPadding = 0
+    private var minHorizontalPadding = 0
+    private var titleSmallLogoOffset = 0
+    private var smallLogoHeight = 0
+    private var smallLogoWidth = 0
+    private var smallLogoBadgeOffset = 0
 
     init {
-        addView(textView)
-        addView(smallIconImageView)
-        addView(cashbackView)
-        addView(iconImageView)
+        addView(titleView)
+        addView(smallLogoImageView)
+        addView(badgeView)
+        addView(logoImageView)
 
-        context.obtainStyledAttributes(attrs, R.styleable.TinkoffIdSignInButton, defStyle, 0)
+        context.obtainStyledAttributes(attrs, R.styleable.TinkoffIdSignInButton, defStyle, defStyleRes)
             .apply {
-                isCompact = getInt(R.styleable.TinkoffIdSignInButton_tinkoff_id_size, ButtonSize.STANDARD.ordinal) == ButtonSize.COMPACT.ordinal
+                isCompact = getBoolean(R.styleable.TinkoffIdSignInButton_tinkoff_id_compact, false)
                 style = getInt(R.styleable.TinkoffIdSignInButton_tinkoff_id_style, ButtonStyle.YELLOW.ordinal).let(ButtonStyle.values()::get)
+                cornerRadius = getDimension(R.styleable.TinkoffIdSignInButton_tinkoff_id_corner_radius, getDimension(TinkoffDimen.tinkoff_id_default_corner_radius).toFloat()).roundToInt()
+                textFont = this@TinkoffIdSignInButton.getFont(getResourceId(R.styleable.TinkoffIdSignInButton_tinkoff_id_font, R.font.neue_haas_unica_w1g))
                 if (!isCompact) {
-                    getString(R.styleable.TinkoffIdSignInButton_tinkoff_id_cashback)?.let { cashback = it }
-                    getString(R.styleable.TinkoffIdSignInButton_tinkoff_id_text).let {
-                        text = checkNotNull(it) {
-                            "Text should be passed in the tinkoff_id_text attribute at the standard size of the button"
-                        }
-                    }
+                    badgeText = getString(R.styleable.TinkoffIdSignInButton_tinkoff_id_badge)
+                    title = getString(R.styleable.TinkoffIdSignInButton_tinkoff_id_title)
                 }
                 recycle()
             }
@@ -190,257 +194,256 @@ public class TinkoffIdSignInButton @JvmOverloads constructor(
 
     @Suppress("ComplexMethod")
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val heightDiff = (measuredHeight - minHeight).takeIf { it > 0f } ?: 0f
-        val specWidth = MeasureSpec.getSize(widthMeasureSpec).toFloat()
-        val specHeight = MeasureSpec.getSize(heightMeasureSpec).toFloat()
-
-        fun defineTextSizes() {
-            val textSize = minFontSize + textFontIncrementPxPerHeightPx * heightDiff
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
-            textPaint.textSize = textSize
-            val layout = createStaticLayout(textView.text.toString(), textPaint)
-            textView.measure(layout.width, layout.height)
+        fun measureTextView(textView: TextView) {
+            val wrapContentSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+            textView.measure(wrapContentSpec, wrapContentSpec)
         }
-
-        fun defineSmallIconSizes() {
-            smallIconHeight = minSmallIconHeight + smallIconHeightIncrementPxPerHeightPx * heightDiff + if (style == ButtonStyle.BLACK) 2 * smallIconBorder else 0f
-            smallIconWidth = smallIconHeight * SMALL_ICON_WIDTH_TO_HEIGHT_RATIO
-        }
-
-        fun defineCashbackSizes() {
-            val textSize = minCashbackFontSize + cashbackFontIncrementPxPerHeightPx * heightDiff
-            cashbackView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
-            textPaint.textSize = textSize
-            val layout = createStaticLayout(cashbackView.text.toString(), textPaint)
-            cashbackView.measure(
-                (layout.width + 2 * horizontalPaddingInCashback).roundToInt(),
-                (layout.height + 2 * verticalPaddingInCashback).roundToInt()
+        fun measureImageView(imageView: ImageView, width: Int, height: Int) {
+            imageView.measure(
+                MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
             )
         }
 
-        val totalHeight = when {
-            isCompact -> maxHeight
-            specHeight > maxHeight -> maxHeight
-            specHeight < minHeight -> minHeight
-            else -> specHeight
+        val totalHeight = if (MeasureSpec.getSize(widthMeasureSpec) < minHeight) {
+            minHeight
+        } else {
+            resolveSize(minHeight, heightMeasureSpec)
         }
+
+        size = getButtonSize(totalHeight)
 
         when {
             isCompact -> Unit
-            cashbackAvailable -> {
-                defineTextSizes()
-                defineSmallIconSizes()
-                defineCashbackSizes()
+            isBadgeState -> {
+                measureTextView(titleView)
+                measureImageView(
+                    smallLogoImageView,
+                    smallLogoWidth + smallLogoBorder,
+                    smallLogoWidth + smallLogoBorder
+                )
+                measureTextView(badgeView)
             }
             else -> {
-                defineTextSizes()
-                defineSmallIconSizes()
+                measureTextView(titleView)
+                measureImageView(
+                    smallLogoImageView,
+                    smallLogoWidth + smallLogoBorder,
+                    smallLogoWidth + smallLogoBorder
+                )
             }
         }
 
         val contentWidth = when {
             isCompact -> totalHeight
-            cashbackAvailable -> 2 * horizontalPaddingCashback + textView.measuredWidth + smallIconWidth +
-                + iconTextOffset + iconCashbackOffset + cashbackView.measuredWidth
-            else -> 2 * horizontalPadding + textView.measuredWidth + smallIconWidth + iconTextOffset
+            isBadgeState -> minHorizontalPadding + titleView.measuredWidth + titleSmallLogoOffset + smallLogoImageView.measuredWidth +
+                    + smallLogoBadgeOffset + badgeView.measuredWidth + minHorizontalPadding
+            else -> minHorizontalPadding + titleView.measuredWidth + titleSmallLogoOffset + smallLogoImageView.measuredWidth + minHorizontalPadding
         }
 
-        val totalWidth = if (isCompact || cashbackAvailable) contentWidth else max(specWidth, contentWidth)
+        val totalWidth = when {
+            isCompact -> contentWidth
+            else -> resolveSize(contentWidth, widthMeasureSpec)
+        }
 
-        setMeasuredDimension(totalWidth.roundToInt(), totalHeight.roundToInt())
+        setMeasuredDimension(totalWidth, totalHeight)
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val parentWidth = r - l
         val parentHeight = b - t
+        val parentTop = minVerticalPadding
+        val parentBottom = parentHeight - minVerticalPadding
 
-        fun View.layout(l: Float, t: Float, r: Float, b: Float) {
-            this.layout(l.roundToInt(), t.roundToInt(), r.roundToInt(), b.roundToInt())
+        fun layoutChild(child: View, childLeft: Int) {
+            val width = child.measuredWidth
+            val height = child.measuredHeight
+            val childTop = parentTop + (parentBottom - parentTop - height) / 2
+            child.layout(childLeft, childTop, childLeft + width, childTop + height)
         }
 
         when {
             isCompact -> {
-                iconImageView.layout(
-                    (parentWidth - iconWidth) / 2f,
-                    (parentHeight - iconHeight) / 2f,
-                    (parentWidth + iconWidth) / 2f,
-                    (parentHeight + iconHeight) / 2f
+                logoImageView.layout(
+                    compactHorizontalPadding,
+                    compactVerticalPadding,
+                    parentWidth - compactHorizontalPadding,
+                    parentHeight - compactVerticalPadding
                 )
             }
-            cashbackAvailable -> {
-                var currentLeft = (parentWidth - textView.measuredWidth - iconTextOffset - smallIconWidth - iconCashbackOffset - cashbackView.measuredWidth) / 2
-                textView.layout(
-                    currentLeft,
-                    (height - textView.measuredHeight) / 2f,
-                    currentLeft + textView.measuredWidth,
-                    (height + textView.measuredHeight) / 2f,
-                )
-                currentLeft += textView.measuredWidth + iconTextOffset
-                smallIconImageView.layout(
-                    currentLeft,
-                    (parentHeight - smallIconHeight) / 2f,
-                    currentLeft + smallIconWidth,
-                    (parentHeight + smallIconHeight) / 2f
-                )
-                currentLeft += smallIconWidth + iconCashbackOffset
-                cashbackView.layout(
-                    currentLeft,
-                    (parentHeight - cashbackView.measuredHeight - verticalPaddingInCashback) / 2f,
-                    currentLeft + cashbackView.measuredWidth,
-                    (parentHeight + cashbackView.measuredHeight + verticalPaddingInCashback) / 2f
-                )
+            isBadgeState -> {
+                var currentLeft = (parentWidth - titleView.measuredWidth - titleSmallLogoOffset - smallLogoImageView.measuredWidth - smallLogoBadgeOffset - badgeView.measuredWidth) / 2
+
+                layoutChild(titleView, currentLeft)
+                currentLeft += titleView.measuredWidth + titleSmallLogoOffset
+
+                layoutChild(smallLogoImageView, currentLeft)
+                currentLeft += smallLogoWidth + smallLogoBadgeOffset
+
+                layoutChild(badgeView, currentLeft)
             }
             else -> {
-                var currentLeft = (parentWidth - smallIconWidth - iconTextOffset - textView.measuredWidth) / 2f
-                textView.layout(
-                    currentLeft,
-                (height - textView.measuredHeight) / 2f,
-                    currentLeft + textView.measuredWidth,
-                    (height + textView.measuredHeight) / 2f,
-                )
-                currentLeft += textView.measuredWidth + iconTextOffset
-                smallIconImageView.layout(
-                    currentLeft,
-                    (parentHeight - smallIconHeight) / 2f,
-                    currentLeft + smallIconWidth,
-                    (parentHeight + smallIconHeight) / 2f
-                )
+                var currentLeft = (parentWidth - titleView.measuredWidth - titleSmallLogoOffset - smallLogoImageView.measuredWidth) / 2
+
+                layoutChild(titleView, currentLeft)
+                currentLeft += titleView.measuredWidth + titleSmallLogoOffset
+
+                layoutChild(smallLogoImageView, currentLeft)
             }
         }
     }
 
     private fun updateStyle() {
         background = if (isCompact) {
-            AppCompatResources.getDrawable(context, style.backgroundCompactRes)
+            getDrawable(style.backgroundCompactRes)
         } else {
-            AppCompatResources.getDrawable(context, style.backgroundRes)
+            val pressedState = getColor(style.buttonPressedStateColorRes)
+            val contentDrawable = GradientDrawable().apply {
+                cornerRadius = this@TinkoffIdSignInButton.cornerRadius.toFloat()
+                color = getColor(style.buttonEnabledStateColorRes)
+            }
+            RippleDrawable(pressedState, contentDrawable, null)
         }
-        textView.setTextColor(AppCompatResources.getColorStateList(context, style.textColorRes))
-        cashbackView.background = AppCompatResources.getDrawable(context, style.backgroundCashBackRes)
-        cashbackView.setTextColor(AppCompatResources.getColorStateList(context, style.textColorRes))
-        smallIconImageView.setImageDrawable(AppCompatResources.getDrawable(context, style.smallIconImageRes))
+        titleView.setTextColor(getColor(style.textColorRes))
+        badgeView.background = getDrawable(style.backgroundBadgeRes)
+        badgeView.setTextColor(getColor(style.textColorRes))
+        smallLogoImageView.setImageDrawable(getDrawable(style.smallIconImageRes))
+    }
+
+    private fun updateSize() {
+        minVerticalPadding = getDimension(size.minVerticalPadding)
+        minHorizontalPadding = getDimension(size.minHorizontalPadding)
+        titleSmallLogoOffset = getDimension(size.titleSmallLogoOffset)
+        smallLogoHeight = getDimension(size.smallLogoHeight)
+        smallLogoWidth = getDimension(size.smallLogoWidth)
+        smallLogoBadgeOffset = getDimension(size.smallLogoBadgeOffset)
+
+        val badgeVerticalPadding = getDimension(size.badgeVerticalPadding)
+        val badgeHorizontalPadding = getDimension(size.badgeHorizontalPadding)
+        badgeView.setPadding(badgeHorizontalPadding, badgeVerticalPadding, badgeHorizontalPadding, badgeVerticalPadding)
+
+        titleView.setTextSize(COMPLEX_UNIT_PX, getDimension(size.titleFontSize).toFloat())
+        badgeView.setTextSize(COMPLEX_UNIT_PX, getDimension(size.badgeFontSize).toFloat())
     }
 
     private fun updateChildrenVisibility() {
-        textView.visibility = when {
+        titleView.visibility = when {
             !isCompact -> VISIBLE
             else -> GONE
         }
 
-        smallIconImageView.visibility = when {
+        smallLogoImageView.visibility = when {
             !isCompact -> VISIBLE
             else -> GONE
         }
 
-        cashbackView.visibility = when {
-            !isCompact && cashbackAvailable -> VISIBLE
+        badgeView.visibility = when {
+            !isCompact && isBadgeState -> VISIBLE
             else -> GONE
         }
 
-        iconImageView.visibility = when {
+        logoImageView.visibility = when {
             isCompact -> VISIBLE
             else -> GONE
         }
     }
 
-    private fun createStaticLayout(
-        text: String,
-        textPaint: TextPaint,
-        textWidth: Int = textPaint.measureText(text).roundToInt(),
-        alignment: Layout.Alignment = Layout.Alignment.ALIGN_NORMAL
-    ): StaticLayout {
-        val spacingMultiplier = 1f
-        val spacingAddition = 0f
-
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            StaticLayout.Builder.obtain(
-                text,
-                0,
-                text.length,
-                textPaint,
-                textWidth
-            )
-                .setAlignment(alignment)
-                .setLineSpacing(spacingAddition, spacingMultiplier)
-                .setIncludePad(false)
-                .build()
-        } else {
-            StaticLayout(
-                text,
-                textPaint,
-                textWidth,
-                alignment,
-                spacingMultiplier,
-                spacingAddition,
-                false
-            )
-        }
+    public enum class ButtonSize(
+        @DimenRes internal val minHeight: Int,
+        @DimenRes internal val minVerticalPadding: Int,
+        @DimenRes internal val minHorizontalPadding: Int,
+        @DimenRes internal val titleFontSize: Int,
+        @DimenRes internal val titleSmallLogoOffset: Int,
+        @DimenRes internal val smallLogoHeight: Int,
+        @DimenRes internal val smallLogoWidth: Int,
+        @DimenRes internal val smallLogoBadgeOffset: Int,
+        @DimenRes internal val badgeFontSize: Int,
+        @DimenRes internal val badgeVerticalPadding: Int,
+        @DimenRes internal val badgeHorizontalPadding: Int
+    ) {
+        SMALL(
+            minHeight = TinkoffDimen.tinkoff_id_small_min_height,
+            minVerticalPadding = TinkoffDimen.tinkoff_id_small_vertical_padding,
+            minHorizontalPadding = TinkoffDimen.tinkoff_id_small_horizontal_padding,
+            titleFontSize = TinkoffDimen.tinkoff_id_title_small_font_size,
+            titleSmallLogoOffset = TinkoffDimen.tinkoff_id_title_small_logo_small_offset,
+            smallLogoHeight = TinkoffDimen.tinkoff_id_small_logo_small_height,
+            smallLogoWidth = TinkoffDimen.tinkoff_id_small_logo_small_width,
+            smallLogoBadgeOffset = TinkoffDimen.tinkoff_id_small_logo_badge_small_offset,
+            badgeFontSize = TinkoffDimen.tinkoff_id_badge_small_font_size,
+            badgeVerticalPadding = TinkoffDimen.tinkoff_id_badge_small_vertical_padding,
+            badgeHorizontalPadding = TinkoffDimen.tinkoff_id_badge_small_horizontal_padding
+        ),
+        MEDIUM(
+            minHeight = TinkoffDimen.tinkoff_id_medium_min_height,
+            minVerticalPadding = TinkoffDimen.tinkoff_id_medium_vertical_padding,
+            minHorizontalPadding = TinkoffDimen.tinkoff_id_medium_horizontal_padding,
+            titleFontSize = TinkoffDimen.tinkoff_id_title_medium_font_size,
+            titleSmallLogoOffset = TinkoffDimen.tinkoff_id_title_small_logo_medium_offset,
+            smallLogoHeight = TinkoffDimen.tinkoff_id_small_logo_medium_height,
+            smallLogoWidth = TinkoffDimen.tinkoff_id_small_logo_medium_width,
+            smallLogoBadgeOffset = TinkoffDimen.tinkoff_id_small_logo_badge_medium_offset,
+            badgeFontSize = TinkoffDimen.tinkoff_id_badge_medium_font_size,
+            badgeVerticalPadding = TinkoffDimen.tinkoff_id_badge_medium_vertical_padding,
+            badgeHorizontalPadding = TinkoffDimen.tinkoff_id_badge_medium_horizontal_padding
+        ),
+        LARGE(
+            minHeight = TinkoffDimen.tinkoff_id_large_min_height,
+            minVerticalPadding = TinkoffDimen.tinkoff_id_large_vertical_padding,
+            minHorizontalPadding = TinkoffDimen.tinkoff_id_large_horizontal_padding,
+            titleFontSize = TinkoffDimen.tinkoff_id_title_large_font_size,
+            titleSmallLogoOffset = TinkoffDimen.tinkoff_id_title_small_logo_large_offset,
+            smallLogoHeight = TinkoffDimen.tinkoff_id_small_logo_large_height,
+            smallLogoWidth = TinkoffDimen.tinkoff_id_small_logo_large_width,
+            smallLogoBadgeOffset = TinkoffDimen.tinkoff_id_small_logo_badge_large_offset,
+            badgeFontSize = TinkoffDimen.tinkoff_id_badge_large_font_size,
+            badgeVerticalPadding = TinkoffDimen.tinkoff_id_badge_large_vertical_padding,
+            badgeHorizontalPadding = TinkoffDimen.tinkoff_id_badge_large_horizontal_padding
+        )
     }
 
-    public enum class ButtonSize {
-        STANDARD,
-        COMPACT
+    private fun getButtonSize(height: Int): ButtonSize = when {
+        height < getDimension(ButtonSize.MEDIUM.minHeight) -> ButtonSize.SMALL
+        height < getDimension(ButtonSize.LARGE.minHeight) -> ButtonSize.MEDIUM
+        else -> ButtonSize.LARGE
     }
 
     public enum class ButtonStyle(
-        @DrawableRes internal val backgroundRes: Int,
+        @ColorRes internal val buttonEnabledStateColorRes: Int,
+        @ColorRes internal val buttonPressedStateColorRes: Int,
         @DrawableRes internal val backgroundCompactRes: Int,
-        @DrawableRes internal val backgroundCashBackRes: Int,
+        @DrawableRes internal val backgroundBadgeRes: Int,
         @DrawableRes internal val smallIconImageRes: Int,
         @ColorRes internal val textColorRes: Int
     ) {
         YELLOW(
-            backgroundRes = R.drawable.tinkoff_id_sign_in_button_background_yellow_style,
-            backgroundCompactRes = R.drawable.tinkoff_id_sign_in_compact_button_background_yellow_style,
-            backgroundCashBackRes = R.drawable.tinkoff_id_cashback_background_yellow_style,
-            smallIconImageRes = R.drawable.tinkoff_id_tinkoff_small_logo,
-            textColorRes = R.color.tinkoff_id_text_yellow_style
+            buttonEnabledStateColorRes = TinkoffColor.tinkoff_id_button_yellow_style,
+            buttonPressedStateColorRes = TinkoffColor.tinkoff_id_button_pressed_yellow_style,
+            backgroundCompactRes = TinkoffDrawable.tinkoff_id_compact_background_yellow_style,
+            backgroundBadgeRes = TinkoffDrawable.tinkoff_id_badge_background_yellow_style,
+            smallIconImageRes = TinkoffDrawable.tinkoff_id_tinkoff_small_logo,
+            textColorRes = TinkoffColor.tinkoff_id_text_yellow_style
         ),
         GRAY(
-            backgroundRes = R.drawable.tinkoff_id_sign_in_button_background_gray_style,
-            backgroundCompactRes = R.drawable.tinkoff_id_sign_in_compact_button_background_gray_style,
-            backgroundCashBackRes = R.drawable.tinkoff_id_cashback_background_gray_style,
-            smallIconImageRes = R.drawable.tinkoff_id_tinkoff_small_logo,
-            textColorRes = R.color.tinkoff_id_text_gray_style
+            buttonEnabledStateColorRes = TinkoffColor.tinkoff_id_button_gray_style,
+            buttonPressedStateColorRes = TinkoffColor.tinkoff_id_button_pressed_gray_style,
+            backgroundCompactRes = TinkoffDrawable.tinkoff_id_compact_background_gray_style,
+            backgroundBadgeRes = TinkoffDrawable.tinkoff_id_badge_background_gray_style,
+            smallIconImageRes = TinkoffDrawable.tinkoff_id_tinkoff_small_logo,
+            textColorRes = TinkoffColor.tinkoff_id_text_gray_style
         ),
         BLACK(
-            backgroundRes = R.drawable.tinkoff_id_sign_in_button_background_black_style,
-            backgroundCompactRes = R.drawable.tinkoff_id_sign_in_compact_button_background_black_style,
-            backgroundCashBackRes = R.drawable.tinkoff_id_cashback_background_black_style,
-            smallIconImageRes = R.drawable.tinkoff_id_tinkoff_small_logo_border,
-            textColorRes = R.color.tinkoff_id_text_black_style
+            buttonEnabledStateColorRes = TinkoffColor.tinkoff_id_button_black_style,
+            buttonPressedStateColorRes = TinkoffColor.tinkoff_id_button_pressed_black_style,
+            backgroundCompactRes = TinkoffDrawable.tinkoff_id_compact_background_black_style,
+            backgroundBadgeRes = TinkoffDrawable.tinkoff_id_badge_background_black_style,
+            smallIconImageRes = TinkoffDrawable.tinkoff_id_tinkoff_small_logo_border,
+            textColorRes = TinkoffColor.tinkoff_id_text_black_style
         )
     }
 
-    private fun Int.dpToPx() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this.toFloat(),
-        resources.displayMetrics
-    )
-
-    private companion object {
-        private const val MIN_FONT_SIZE_DP = 14
-        private const val MAX_FONT_SIZE_DP = 16
-        private const val MIN_HEIGHT_DP = 40
-        private const val MAX_HEIGHT_DP = 56
-        private const val ICON_TEXT_OFFSET_DP = 8
-        private const val VERTICAL_PADDING_DP = 12
-
-        // no cashback style parameters
-        private const val HORIZONTAL_PADDING_DP = 32
-        // cashback style parameters
-        private const val HORIZONTAL_PADDING_CASHBACK_DP = 16
-        private const val ICON_CASHBACK_OFFSET_DP = 32
-        private const val MIN_CASHBACK_FONT_SIZE_DP = 10
-        private const val MAX_CASHBACK_FONT_SIZE_DP = 12
-        // icon parameters
-        private const val ICON_HEIGHT_DP = MAX_HEIGHT_DP - 2 * VERTICAL_PADDING_DP
-        private const val ICON_WIDTH_DP = ICON_HEIGHT_DP * 32 / 28f
-        // small icon parameters
-        private const val SMALL_ICON_VERTICAL_PADDING_DP = 15
-        private const val MIN_SMALL_ICON_HEIGHT_DP = MIN_HEIGHT_DP - 2 * SMALL_ICON_VERTICAL_PADDING_DP
-        private const val MAX_SMALL_ICON_HEIGHT_DP = 18
-        private const val SMALL_ICON_WIDTH_TO_HEIGHT_RATIO = 2f
-        private const val SMALL_ICON_BORDER_DP = 2
-    }
+    private fun getDimension(@DimenRes id: Int) = context.resources.getDimension(id).roundToInt()
+    private fun getDrawable(@DrawableRes id: Int) = AppCompatResources.getDrawable(context, id)
+    private fun getColor(@ColorRes id: Int) = AppCompatResources.getColorStateList(context, id)
+    private fun getFont(@FontRes id: Int) = ResourcesCompat.getFont(context, id)
 }

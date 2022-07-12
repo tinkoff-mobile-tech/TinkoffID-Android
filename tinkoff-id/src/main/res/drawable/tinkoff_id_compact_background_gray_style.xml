@@ -16,17 +16,12 @@
   -->
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/tinkoff_id_button_pressed_yellow_style">
+    android:color="@color/tinkoff_id_button_pressed_gray_style">
     <item>
         <selector>
-            <item android:state_enabled="false">
-                <shape android:shape="oval">
-                    <solid android:color="@color/tinkoff_id_button_disabled_yellow_style" />
-                </shape>
-            </item>
             <item>
                 <shape android:shape="oval">
-                    <solid android:color="@color/tinkoff_id_button_yellow_style" />
+                    <solid android:color="@color/tinkoff_id_button_gray_style" />
                 </shape>
             </item>
         </selector>

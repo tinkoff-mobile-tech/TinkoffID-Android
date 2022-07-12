@@ -17,9 +17,51 @@
 
 <resources>
 
-    <dimen name="tinkoff_id_sign_in_button_corner_radius">12dp</dimen>
-    <dimen name="tinkoff_id_cashback_corner_radius">14dp</dimen>
-    <dimen name="tinkoff_id_vertical_cashback_padding">2dp</dimen>
-    <dimen name="tinkoff_id_horizontal_cashback_padding">6dp</dimen>
+    <dimen name="tinkoff_id_default_corner_radius">8dp</dimen>
+
+    <dimen name="tinkoff_id_small_min_height">30dp</dimen>
+    <dimen name="tinkoff_id_medium_min_height">40dp</dimen>
+    <dimen name="tinkoff_id_large_min_height">60dp</dimen>
+
+    <dimen name="tinkoff_id_small_vertical_padding">5dp</dimen>
+    <dimen name="tinkoff_id_medium_vertical_padding">10dp</dimen>
+    <dimen name="tinkoff_id_large_vertical_padding">16dp</dimen>
+    <dimen name="tinkoff_id_small_horizontal_padding">10dp</dimen>
+    <dimen name="tinkoff_id_medium_horizontal_padding">13dp</dimen>
+    <dimen name="tinkoff_id_large_horizontal_padding">20dp</dimen>
+
+    <dimen name="tinkoff_id_title_small_font_size">12sp</dimen>
+    <dimen name="tinkoff_id_title_medium_font_size">15sp</dimen>
+    <dimen name="tinkoff_id_title_large_font_size">19sp</dimen>
+
+    <dimen name="tinkoff_id_title_small_logo_small_offset">4dp</dimen>
+    <dimen name="tinkoff_id_title_small_logo_medium_offset">8dp</dimen>
+    <dimen name="tinkoff_id_title_small_logo_large_offset">8dp</dimen>
+
+    <dimen name="tinkoff_id_small_logo_small_height">15dp</dimen>
+    <dimen name="tinkoff_id_small_logo_small_width">30dp</dimen>
+    <dimen name="tinkoff_id_small_logo_medium_height">19dp</dimen>
+    <dimen name="tinkoff_id_small_logo_medium_width">37dp</dimen>
+    <dimen name="tinkoff_id_small_logo_large_height">22dp</dimen>
+    <dimen name="tinkoff_id_small_logo_large_width">45dp</dimen>
+    <dimen name="tinkoff_id_small_logo_border">2dp</dimen>
+
+    <dimen name="tinkoff_id_small_logo_badge_small_offset">20dp</dimen>
+    <dimen name="tinkoff_id_small_logo_badge_medium_offset">26dp</dimen>
+    <dimen name="tinkoff_id_small_logo_badge_large_offset">40dp</dimen>
+
+    <dimen name="tinkoff_id_badge_small_font_size">11sp</dimen>
+    <dimen name="tinkoff_id_badge_medium_font_size">11sp</dimen>
+    <dimen name="tinkoff_id_badge_large_font_size">13sp</dimen>
+    <dimen name="tinkoff_id_badge_small_vertical_padding">0dp</dimen>
+    <dimen name="tinkoff_id_badge_small_horizontal_padding">4dp</dimen>
+    <dimen name="tinkoff_id_badge_medium_vertical_padding">2dp</dimen>
+    <dimen name="tinkoff_id_badge_medium_horizontal_padding">6dp</dimen>
+    <dimen name="tinkoff_id_badge_large_vertical_padding">2dp</dimen>
+    <dimen name="tinkoff_id_badge_large_horizontal_padding">8dp</dimen>
+    <dimen name="tinkoff_id_badge_corner_radius">14dp</dimen>
+
+    <dimen name="tinkoff_id_compact_vertical_padding">12dp</dimen>
+    <dimen name="tinkoff_id_compact_horizontal_padding">10dp</dimen>
 
 </resources>

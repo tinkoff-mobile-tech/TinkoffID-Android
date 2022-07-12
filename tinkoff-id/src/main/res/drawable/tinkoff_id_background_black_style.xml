@@ -15,11 +15,15 @@
   ~ limitations under the License.
   -->
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/tinkoff_id_cashback_gray_style"/>
-    <corners android:radius="@dimen/tinkoff_id_cashback_corner_radius"/>
-    <padding android:bottom="@dimen/tinkoff_id_vertical_cashback_padding"/>
-    <padding android:top="@dimen/tinkoff_id_vertical_cashback_padding"/>
-    <padding android:left="@dimen/tinkoff_id_horizontal_cashback_padding"/>
-    <padding android:right="@dimen/tinkoff_id_horizontal_cashback_padding"/>
-</shape>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/tinkoff_id_button_pressed_black_style">
+    <item>
+        <selector>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/tinkoff_id_button_black_style" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+</ripple>

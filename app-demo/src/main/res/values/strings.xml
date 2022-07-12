@@ -8,7 +8,7 @@
     <string name="partner_auth_compact" translatable="false">compact</string>
     <string name="partner_auth_standard" translatable="false">standard</string>
     <string name="partner_auth_edit_text_empty_error_description" translatable="false">Сannot be empty</string>
-    <string name="partner_auth_sign_in_button_text" translatable="false">Sign in with Tinkoff</string>
-    <string name="partner_auth_sign_in_button_cashback" translatable="false">15</string>
+    <string name="partner_auth_sign_in_button_title" translatable="false">Sign in with</string>
+    <string name="partner_auth_sign_in_button_badge" translatable="false">Cashback up to 5%</string>
 
 </resources>

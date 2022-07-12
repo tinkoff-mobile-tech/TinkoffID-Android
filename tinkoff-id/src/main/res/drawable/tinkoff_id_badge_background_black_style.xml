@@ -16,10 +16,6 @@
   -->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/tinkoff_id_cashback_black_style"/>
-    <corners android:radius="@dimen/tinkoff_id_cashback_corner_radius"/>
-    <padding android:bottom="@dimen/tinkoff_id_vertical_cashback_padding"/>
-    <padding android:top="@dimen/tinkoff_id_vertical_cashback_padding"/>
-    <padding android:left="@dimen/tinkoff_id_horizontal_cashback_padding"/>
-    <padding android:right="@dimen/tinkoff_id_horizontal_cashback_padding"/>
+    <solid android:color="@color/tinkoff_id_badge_black_style"/>
+    <corners android:radius="@dimen/tinkoff_id_badge_corner_radius"/>
 </shape>
