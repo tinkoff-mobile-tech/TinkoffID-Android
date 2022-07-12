@@ -53,11 +53,11 @@
     <dimen name="tinkoff_id_badge_small_font_size">11sp</dimen>
     <dimen name="tinkoff_id_badge_medium_font_size">11sp</dimen>
     <dimen name="tinkoff_id_badge_large_font_size">13sp</dimen>
-    <dimen name="tinkoff_id_badge_small_vertical_padding">0dp</dimen>
+    <dimen name="tinkoff_id_badge_small_vertical_padding">2.5dp</dimen>
     <dimen name="tinkoff_id_badge_small_horizontal_padding">4dp</dimen>
-    <dimen name="tinkoff_id_badge_medium_vertical_padding">2dp</dimen>
+    <dimen name="tinkoff_id_badge_medium_vertical_padding">4.5dp</dimen>
     <dimen name="tinkoff_id_badge_medium_horizontal_padding">6dp</dimen>
-    <dimen name="tinkoff_id_badge_large_vertical_padding">2dp</dimen>
+    <dimen name="tinkoff_id_badge_large_vertical_padding">5.5dp</dimen>
     <dimen name="tinkoff_id_badge_large_horizontal_padding">8dp</dimen>
     <dimen name="tinkoff_id_badge_corner_radius">14dp</dimen>
 
