@@ -205,7 +205,7 @@ public class TinkoffIdSignInButton @JvmOverloads constructor(
             )
         }
 
-        val totalHeight = if (MeasureSpec.getSize(widthMeasureSpec) < minHeight) {
+        val totalHeight = if (MeasureSpec.getSize(heightMeasureSpec) < minHeight) {
             minHeight
         } else {
             resolveSize(minHeight, heightMeasureSpec)
