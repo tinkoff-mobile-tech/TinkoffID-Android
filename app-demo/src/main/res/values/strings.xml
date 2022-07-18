@@ -6,7 +6,9 @@
     <string name="partner_auth_redirect_url" translatable="false">RedirectUrl</string>
     <string name="partner_auth_reset" translatable="false">Reset</string>
     <string name="partner_auth_compact" translatable="false">compact</string>
-    <string name="partner_auth_standard" translatable="false">standard</string>
+    <string name="partner_auth_standard_small_black" translatable="false">standard | small size | black style</string>
+    <string name="partner_auth_standard_medium_gray" translatable="false">standard | medium size | gray style</string>
+    <string name="partner_auth_standard_large_yellow" translatable="false">standard | large size | yellow style</string>
     <string name="partner_auth_edit_text_empty_error_description" translatable="false">Сannot be empty</string>
     <string name="partner_auth_sign_in_button_title" translatable="false">Sign in with</string>
     <string name="partner_auth_sign_in_button_badge" translatable="false">Cashback up to 5%</string>

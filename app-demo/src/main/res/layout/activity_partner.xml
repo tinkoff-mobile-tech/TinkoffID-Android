@@ -1,123 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".PartnerActivity">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/clientIdInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:hint="@string/partner_auth_client_id"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etClientId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/clientIdInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/partner_auth_client_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/redirectUriInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:hint="@string/partner_auth_redirect_url"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clientIdInputLayout">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etClientId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etRedirectUri"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/redirectUriInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/partner_auth_redirect_url"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clientIdInputLayout">
 
-    <Button
-        android:id="@+id/reset"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/partner_auth_reset"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/redirectUriInputLayout" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etRedirectUri"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/compactButtonLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/partner_auth_compact"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reset" />
+        <Button
+            android:id="@+id/reset"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/partner_auth_reset"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/redirectUriInputLayout" />
 
-    <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
-        android:id="@+id/compactButtonTinkoffAuth"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:layout_margin="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/compactButtonLabel"
-        app:tinkoff_id_compact="true"
-        app:tinkoff_id_style="black" />
+        <TextView
+            android:id="@+id/compactButtonLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/partner_auth_compact"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reset" />
 
-    <TextView
-        android:id="@+id/standardButtonLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/partner_auth_standard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/compactButtonTinkoffAuth" />
+        <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
+            android:id="@+id/compactBlackButtonTinkoffAuth"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/compactGrayButtonTinkoffAuth"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/compactButtonLabel"
+            app:tinkoff_id_compact="true"
+            app:tinkoff_id_style="black" />
 
-    <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
-        android:id="@+id/standardButtonTinkoffAuth"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_margin="8dp"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/standardButtonLabel"
-        app:tinkoff_id_badge="@string/partner_auth_sign_in_button_badge"
-        app:tinkoff_id_compact="false"
-        app:tinkoff_id_corner_radius="@dimen/tinkoff_id_default_corner_radius"
-        app:tinkoff_id_style="yellow"
-        app:tinkoff_id_title="@string/partner_auth_sign_in_button_title"
-        app:tinkoff_id_font="@font/neue_haas_unica_w1g"/>
+        <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
+            android:id="@+id/compactGrayButtonTinkoffAuth"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/compactYellowButtonTinkoffAuth"
+            app:layout_constraintStart_toEndOf="@+id/compactBlackButtonTinkoffAuth"
+            app:layout_constraintTop_toBottomOf="@id/compactButtonLabel"
+            app:tinkoff_id_compact="true"
+            app:tinkoff_id_style="gray" />
 
-    <Button
-        android:id="@+id/buttonUpdateToken"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/partner_auth_refresh_btn"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/standardButtonTinkoffAuth" />
+        <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
+            android:id="@+id/compactYellowButtonTinkoffAuth"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/compactGrayButtonTinkoffAuth"
+            app:layout_constraintTop_toBottomOf="@id/compactButtonLabel"
+            app:tinkoff_id_compact="true"
+            app:tinkoff_id_style="yellow" />
 
-    <Button
-        android:id="@+id/buttonRevokeToken"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/partner_auth_revoke_btn"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonUpdateToken" />
+        <TextView
+            android:id="@+id/standardSmallBlackButtonLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/partner_auth_standard_small_black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/compactGrayButtonTinkoffAuth" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
+            android:id="@+id/standardSmallBlackButtonTinkoffAuth"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="8dp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/standardSmallBlackButtonLabel"
+            app:tinkoff_id_badge="@string/partner_auth_sign_in_button_badge"
+            app:tinkoff_id_compact="false"
+            app:tinkoff_id_corner_radius="@dimen/tinkoff_id_default_corner_radius"
+            app:tinkoff_id_font="@font/neue_haas_unica_w1g"
+            app:tinkoff_id_style="black"
+            app:tinkoff_id_title="@string/partner_auth_sign_in_button_title" />
+
+        <TextView
+            android:id="@+id/standardMediumGrayButtonLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/partner_auth_standard_medium_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/standardSmallBlackButtonTinkoffAuth" />
+
+        <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
+            android:id="@+id/standardMediumGrayButtonTinkoffAuth"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/standardMediumGrayButtonLabel"
+            app:tinkoff_id_badge="@string/partner_auth_sign_in_button_badge"
+            app:tinkoff_id_compact="false"
+            app:tinkoff_id_corner_radius="@dimen/tinkoff_id_default_corner_radius"
+            app:tinkoff_id_font="@font/neue_haas_unica_w1g"
+            app:tinkoff_id_style="gray"
+            app:tinkoff_id_title="@string/partner_auth_sign_in_button_title" />
+
+        <TextView
+            android:id="@+id/standardLargeYellowButtonLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/partner_auth_standard_large_yellow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/standardMediumGrayButtonTinkoffAuth" />
+
+        <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
+            android:id="@+id/standardLargeYellowButtonTinkoffAuth"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_margin="8dp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/standardLargeYellowButtonLabel"
+            app:tinkoff_id_badge="@string/partner_auth_sign_in_button_badge"
+            app:tinkoff_id_compact="false"
+            app:tinkoff_id_corner_radius="@dimen/tinkoff_id_default_corner_radius"
+            app:tinkoff_id_font="@font/neue_haas_unica_w1g"
+            app:tinkoff_id_style="yellow"
+            app:tinkoff_id_title="@string/partner_auth_sign_in_button_title" />
+
+        <Button
+            android:id="@+id/buttonUpdateToken"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/partner_auth_refresh_btn"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/standardLargeYellowButtonTinkoffAuth" />
+
+        <Button
+            android:id="@+id/buttonRevokeToken"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/partner_auth_revoke_btn"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonUpdateToken" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

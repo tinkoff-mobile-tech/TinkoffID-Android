@@ -30,8 +30,12 @@ class PartnerActivity : AppCompatActivity() {
     private val redirectUriEditText by lazy(NONE) { findViewById<EditText>(R.id.etRedirectUri) }
 
     private val reset by lazy(NONE) { findViewById<Button>(R.id.reset) }
-    private val compactButtonTinkoffAuth by lazy(NONE) { findViewById<TinkoffIdSignInButton>(R.id.compactButtonTinkoffAuth) }
-    private val standardButtonTinkoffAuth by lazy(NONE) { findViewById<TinkoffIdSignInButton>(R.id.standardButtonTinkoffAuth) }
+    private val compactBlackButtonTinkoffAuth by lazy(NONE) { findViewById<TinkoffIdSignInButton>(R.id.compactBlackButtonTinkoffAuth) }
+    private val compactGrayButtonTinkoffAuth by lazy(NONE) { findViewById<TinkoffIdSignInButton>(R.id.compactGrayButtonTinkoffAuth) }
+    private val compactYellowButtonTinkoffAuth by lazy(NONE) { findViewById<TinkoffIdSignInButton>(R.id.compactYellowButtonTinkoffAuth) }
+    private val standardSmallBlackButtonTinkoffAuth by lazy(NONE) { findViewById<TinkoffIdSignInButton>(R.id.standardSmallBlackButtonTinkoffAuth) }
+    private val standardMediumGrayButtonTinkoffAuth by lazy(NONE) { findViewById<TinkoffIdSignInButton>(R.id.standardMediumGrayButtonTinkoffAuth) }
+    private val standardLargeYellowButtonTinkoffAuth by lazy(NONE) { findViewById<TinkoffIdSignInButton>(R.id.standardLargeYellowButtonTinkoffAuth) }
     private val buttonUpdateToken by lazy(NONE) { findViewById<Button>(R.id.buttonUpdateToken) }
     private val buttonRevokeToken by lazy(NONE) { findViewById<Button>(R.id.buttonRevokeToken) }
 
@@ -50,8 +54,12 @@ class PartnerActivity : AppCompatActivity() {
             }
         }
 
-        compactButtonTinkoffAuth.setOnClickListener(clickListener)
-        standardButtonTinkoffAuth.setOnClickListener(clickListener)
+        compactBlackButtonTinkoffAuth.setOnClickListener(clickListener)
+        compactGrayButtonTinkoffAuth.setOnClickListener(clickListener)
+        compactYellowButtonTinkoffAuth.setOnClickListener(clickListener)
+        standardSmallBlackButtonTinkoffAuth.setOnClickListener(clickListener)
+        standardMediumGrayButtonTinkoffAuth.setOnClickListener(clickListener)
+        standardLargeYellowButtonTinkoffAuth.setOnClickListener(clickListener)
 
         buttonUpdateToken.setOnClickListener {
             partnerPresenter.refreshToken()
