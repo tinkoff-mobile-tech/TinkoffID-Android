@@ -42,7 +42,7 @@ implementation "ru.tinkoff.core.tinkoffauth:tinkoff-id:${version}"
 2. Запустить партнерскую авторизацию, передав ваш App/Deep link (по данному uri приложение группы Тинькофф вернется обратно после процесса авторизации)
 ```kotlin
     val intent = tinkoffIdAuth.createTinkoffAuthIntent(partnerUri)
-startActivity(intent)
+    startActivity(intent)
 ```
 3. После прохождения пользователем авторизации в приложении Тинькофф, произойдет переход в ваше приложение. В intent.data будет храниться информация по авторизации.
 
@@ -72,7 +72,7 @@ tinkoffIdAuth.obtainTokenPayload(refreshToken)
 
 ```kotlin
     fun signOutByAccessToken(accessToken: String): TinkoffCall<Unit>
-fun signOutByRefreshToken(refreshToken: String): TinkoffCall<Unit>
+    fun signOutByRefreshToken(refreshToken: String): TinkoffCall<Unit>
 ```
 
 ### Хранение Refresh Token
@@ -106,11 +106,11 @@ fun signOutByRefreshToken(refreshToken: String): TinkoffCall<Unit>
 
 Виды кнопок:
 
-compact
-![compact.png](imgs/tinkoff_id_sign_in_button/compact.png)
+  compact
+  ![compact.png](imgs/tinkoff_id_sign_in_button/compact.png)
 
-standard
-![standard.png](imgs/tinkoff_id_sign_in_button/standard.png)
+  standard
+  ![standard.png](imgs/tinkoff_id_sign_in_button/standard.png)
 
 ## Структура публичной части SDK
 
