@@ -2,6 +2,7 @@
 
 #### Fixed
 #### Changes
+- [app-demo][tinkoff-id] redesign TinkoffIdSignInButton MC-6146
 #### Additions
 
 ## 1.0.2
