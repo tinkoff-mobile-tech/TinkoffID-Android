@@ -47,7 +47,7 @@ internal typealias TinkoffColor = R.color
 internal typealias TinkoffDimen = R.dimen
 
 /**
- * A button with an icon, text, cashback and other customization options that can be used to partner authorization.
+ * A button with an title text, icon, badge text and other customization options that can be used for partner authorization.
  *
  * ## Usage
  * ```xml
@@ -65,9 +65,9 @@ internal typealias TinkoffDimen = R.dimen
  *
  * ## View attributes:
  * - `tinkoff_id_compact` - way to customize the button size, one of the options - false (default) / true
- * - `tinkoff_id_badge` - additional text to attract attention. Used only if `tinkoff_id_compact` attribute is false.
- * - `tinkoff_id_title` - text to display on the button together with "Tinkoff". Used only if `tinkoff_id_compact` attribute is false.
  * - `tinkoff_id_style` - special button style, one of the options - "yellow" (default) / "gray" / "black"
+ * - `tinkoff_id_title` - text preceding "Tinkoff" on the button. Used only if `tinkoff_id_compact` attribute is false.
+ * - `tinkoff_id_badge` - additional text to attract attention. Used only if `tinkoff_id_compact` attribute is false.
  * - `tinkoff_id_corner_radius` - radius for button corners. Used only if `tinkoff_id_compact` attribute is false.
  * - `tinkoff_id_font` - font of the text on the button. Used only if `tinkoff_id_compact` attribute is false.
  *
