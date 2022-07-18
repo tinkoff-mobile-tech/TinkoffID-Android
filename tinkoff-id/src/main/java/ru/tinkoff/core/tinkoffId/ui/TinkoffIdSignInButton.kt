@@ -47,7 +47,7 @@ internal typealias TinkoffColor = R.color
 internal typealias TinkoffDimen = R.dimen
 
 /**
- * A button with an title text, icon, badge text and other customization options that can be used for partner authorization.
+ * A button with an icon, title text, badge text, and other customization options that can be used for partner authorization.
  *
  * ## Usage
  * ```xml
