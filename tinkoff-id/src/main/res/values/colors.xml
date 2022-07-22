@@ -17,9 +17,18 @@
 
 <resources>
 
-    <color name="tinkoff_id_n1">#333333</color>
-    <color name="tinkoff_id_n2">#ffdd2d</color>
-    <color name="tinkoff_id_n2_pressed">#ffcd33</color>
-    <color name="tinkoff_id_n2_disabled">#f6f7f8</color>
+    <color name="tinkoff_id_text_yellow_style">#333333</color>
+    <color name="tinkoff_id_button_yellow_style">#FFDD2D</color>
+    <color name="tinkoff_id_button_pressed_yellow_style">#FAB619</color>
+    <color name="tinkoff_id_badge_yellow_style">#FFEE95</color>
 
+    <color name="tinkoff_id_text_gray_style">#333333</color>
+    <color name="tinkoff_id_button_gray_style">#F5F5F6</color>
+    <color name="tinkoff_id_button_pressed_gray_style">#CECECF</color>
+    <color name="tinkoff_id_badge_gray_style">#FFFFFF</color>
+
+    <color name="tinkoff_id_text_black_style">#FFFFFF</color>
+    <color name="tinkoff_id_button_black_style">#000000</color>
+    <color name="tinkoff_id_button_pressed_black_style">#333333</color>
+    <color name="tinkoff_id_badge_black_style">#3D3D3D</color>
 </resources>

@@ -82,28 +82,35 @@ tinkoffIdAuth.obtainTokenPayload(refreshToken)
 
 ### UI
 
-Чтобы подробнее ознакомиться со стайлгайдом по размещению кнопок перейдите по [ссылке](https://www.figma.com/file/TsgXOeAqFEePVIosk0W7kP/Tinkoff-ID)
+Чтобы подробнее ознакомиться со стайлгайдом по размещению кнопок перейдите по [ссылке](https://www.figma.com/file/Yj3o7yQotahvBxfIKhBmJc/Tinkoff-ID-guide)
 
 Библиотека предоставляет кнопку `TinkoffIdSignInButton.kt`.
-Пример по ее настройке доступен в `PartnerActivity.kt` и `activity_partner.xml`. Размер кнопки настраивается через атрибут
-`app:tinkoff_id_size`, который может иметь значение `compact` или `standard` (по умолчанию). Подробное описание
-различий находится в комментарии в `TinkoffIdSignInButton.kt`.
+Пример по ее настройке доступен в `PartnerActivity.kt` и `activity_partner.xml`.
+Форма кнопки настраивается через атрибут `app:tinkoff_id_compact`, который может иметь значение `true` или `false` (по умолчанию).
+Стиль кнопки можно изменить с помощью атрибута `app:tinkoff_id_style`, который может иметь значение `black` / `gray` / `yellow` (по умолчанию).
+Если кнопка имеет стандартную форму, то можно дополнительно настроить основной текст (`app:tinkoff_id_title`), дополнительный текст на бейдже (`app:tinkoff_id_badge`), радиусы углов (`app:tinkoff_id_corner_radius`) и шрифт текста (`app:tinkoff_id_font`).
 Пример добавления кнопки:
 
 ```xml
-    <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
+     <ru.tinkoff.core.tinkoffId.ui.TinkoffIdSignInButton
+        android:id="@+id/standardButtonTinkoffAuth"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:tinkoff_id_size="compact" />
+        android:layout_height="60dp"
+        app:tinkoff_id_compact="false"
+        app:tinkoff_id_title="Sign in with"
+        app:tinkoff_id_badge="Cashback up to 5%"
+        app:tinkoff_id_style="yellow"
+        app:tinkoff_id_corner_radius="8dp"
+        app:tinkoff_id_font="@font/neue_haas_unica_w1g"/>
 ```
 
 Виды кнопок:
 
-   compact
-   ![compact.png](imgs/tinkoff_id_sign_in_button/compact.png)
+  compact
+  ![compact.png](imgs/tinkoff_id_sign_in_button/compact.png)
 
-   standard
-   ![standard.png](imgs/tinkoff_id_sign_in_button/standard.png)
+  standard
+  ![standard.png](imgs/tinkoff_id_sign_in_button/standard.png)
 
 ## Структура публичной части SDK
 

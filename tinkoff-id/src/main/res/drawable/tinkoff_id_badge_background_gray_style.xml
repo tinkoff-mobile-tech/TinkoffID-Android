@@ -15,8 +15,7 @@
   ~ limitations under the License.
   -->
 
-<resources>
-
-    <string name="tinkoff_id_tinkoff_text">Tinkoff</string>
-
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/tinkoff_id_badge_gray_style"/>
+    <corners android:radius="@dimen/tinkoff_id_badge_corner_radius"/>
+</shape>

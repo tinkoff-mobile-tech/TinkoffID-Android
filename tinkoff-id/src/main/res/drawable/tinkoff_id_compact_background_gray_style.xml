@@ -16,19 +16,12 @@
   -->
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/tinkoff_id_n2_pressed">
+    android:color="@color/tinkoff_id_button_pressed_gray_style">
     <item>
         <selector>
-            <item android:state_enabled="false">
-                <shape android:shape="rectangle">
-                    <solid android:color="@color/tinkoff_id_n2_disabled" />
-                    <corners android:radius="@dimen/tinkoff_id_sign_in_button_corner_radius" />
-                </shape>
-            </item>
             <item>
-                <shape android:shape="rectangle">
-                    <solid android:color="@color/tinkoff_id_n2" />
-                    <corners android:radius="@dimen/tinkoff_id_sign_in_button_corner_radius" />
+                <shape android:shape="oval">
+                    <solid android:color="@color/tinkoff_id_button_gray_style" />
                 </shape>
             </item>
         </selector>
