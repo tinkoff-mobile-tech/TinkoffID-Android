@@ -3,6 +3,7 @@
 #### Fixed
 #### Changes
 #### Additions
+- [tinkoff-id] add self-signed SSL certificates MC-7689
 
 ## 1.0.3
 

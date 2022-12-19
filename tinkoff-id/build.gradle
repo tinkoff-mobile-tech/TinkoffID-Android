@@ -10,6 +10,8 @@ android {
 }
 
 dependencies {
+    implementation "ru.tinkoff.core.components.security:ssl-trusted-certs:$sslTrustedCertsVersion"
+
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
 
