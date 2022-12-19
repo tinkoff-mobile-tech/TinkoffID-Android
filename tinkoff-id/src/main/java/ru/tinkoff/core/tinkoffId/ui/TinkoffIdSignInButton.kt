@@ -71,7 +71,7 @@ internal typealias TinkoffDimen = R.dimen
  * - `tinkoff_id_corner_radius` - radius for button corners. Used only if `tinkoff_id_compact` attribute is false.
  * - `tinkoff_id_font` - font of the text on the button. Used only if `tinkoff_id_compact` attribute is false.
  *
- * @author Dmitry Naymushin, Kirill Voskrebentsev
+ * @author Kirill Voskrebentsev
  */
 public class TinkoffIdSignInButton @JvmOverloads constructor(
     context: Context,

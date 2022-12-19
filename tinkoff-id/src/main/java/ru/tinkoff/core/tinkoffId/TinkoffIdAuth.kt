@@ -22,6 +22,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import okhttp3.OkHttpClient
+import ru.tinkoff.core.components.security.ssltrusted.certs.SslTrustedCerts.enrichWithTrustedCerts
 import ru.tinkoff.core.tinkoffId.api.TinkoffIdApi
 import ru.tinkoff.core.tinkoffId.codeVerifier.CodeVerifierStore
 import ru.tinkoff.core.tinkoffId.codeVerifier.CodeVerifierUtil
@@ -43,6 +44,7 @@ public class TinkoffIdAuth(
 
     init {
         val client = OkHttpClient.Builder()
+            .enrichWithTrustedCerts(context)
             .readTimeout(OKHTTP_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .writeTimeout(OKHTTP_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .connectTimeout(OKHTTP_TIMEOUT_SECONDS, TimeUnit.SECONDS)
