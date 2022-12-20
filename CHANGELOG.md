@@ -1,3 +1,9 @@
+## 1.0.5
+
+#### Fixed
+#### Changes
+#### Additions
+
 ## 1.0.4
 
 #### Fixed
