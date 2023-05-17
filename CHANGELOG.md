@@ -2,6 +2,9 @@
 
 #### Fixed
 #### Changes
+
+- [tinkoff-id] update versions of target and compile sdk, AGP and Gradle, dependencies MC-9132
+
 #### Additions
 
 ## 1.0.4
@@ -15,14 +18,14 @@
 
 #### Fixed
 #### Changes
-- [app-demo][tinkoff-id] redesign TinkoffIdSignInButton MC-6146
+- [app-demo], [tinkoff-id] redesign TinkoffIdSignInButton MC-6146
 #### Additions
 
 ## 1.0.2
 
 #### Fixed
 #### Changes
-- [app-demo][tinkoff-id] bump up API versions (targetSdk and compileSdk to 31) and dependencies versions MC-5659
+- [app-demo], [tinkoff-id] bump up API versions (targetSdk and compileSdk to 31) and dependencies versions MC-5659
 #### Additions
 
 ## 1.0.1

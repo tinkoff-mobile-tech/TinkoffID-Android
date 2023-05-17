@@ -521,7 +521,7 @@ style:
     active: false
   DataClassContainsFunctions:
     active: false
-    conversionFunctionPrefix: 'to'
+    conversionFunctionPrefix: ['to']
   DataClassShouldBeImmutable:
     active: false
   EqualsNullCall:
@@ -556,7 +556,7 @@ style:
   FunctionOnlyReturningConstant:
     active: false
     ignoreOverridableFunction: true
-    excludedFunctions: 'describeContents'
+    excludedFunctions: ['describeContents']
     ignoreAnnotated: ['dagger.Provides']
   LibraryCodeMustSpecifyReturnType:
     active: true
@@ -617,7 +617,7 @@ style:
   ReturnCount:
     active: false
     max: 2
-    excludedFunctions: 'equals'
+    excludedFunctions: ['equals']
     excludeLabeled: false
     excludeReturnFromLambda: true
     excludeGuardClauses: false

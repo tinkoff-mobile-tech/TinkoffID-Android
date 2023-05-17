@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 
 /**
  * @author Stanislav Mukhametshin
@@ -71,10 +72,17 @@ internal object AppLinkUtil {
             addCategory(PARTNER_AUTH_CATEGORY)
             data = baseUri
         }
-        val list = context.packageManager.queryIntentActivities(
-            intent,
-            PackageManager.MATCH_DEFAULT_ONLY
-        )
+        val flag = PackageManager.MATCH_DEFAULT_ONLY
+        val list = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.packageManager.queryIntentActivities(
+                intent,
+                PackageManager.ResolveInfoFlags.of(
+                    flag.toLong()
+                )
+            )
+        } else {
+            context.packageManager.queryIntentActivities(intent, flag)
+        }
         return list.size > 0
     }
 
