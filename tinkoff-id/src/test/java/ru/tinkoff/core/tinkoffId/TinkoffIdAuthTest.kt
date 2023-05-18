@@ -51,6 +51,7 @@ public class TinkoffIdAuthTest {
         assertThat(queryParam("code_challenge_method")).isNotEmpty()
         assertThat(queryParam("callback_url")).isEqualTo(testUri.toString())
         assertThat(queryParam("package_name")).isNotEmpty()
+        assertThat(queryParam("partner_sdk_version")).isEqualTo(BuildConfig.VERSION_NAME)
     }
 
     @Test
