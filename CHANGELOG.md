@@ -4,6 +4,8 @@
 #### Changes
 #### Additions
 
+- [tinkoff-id] В Intent для запуска авторизации добавлен параметр версии SDK MC-6740
+
 ## 1.0.4
 
 #### Fixed
