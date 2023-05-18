@@ -35,6 +35,7 @@ internal object AppLinkUtil {
     private const val QUERY_PARAMETER_CODE = "code"
     private const val QUERY_PARAMETER_AUTH_STATUS_CODE = "auth_status_code"
     private const val QUERY_PARAMETER_REDIRECT_URI = "redirect_uri"
+    private const val QUERY_PARTNER_SDK_VERSION = "partner_sdk_version"
 
     private const val AUTH_STATUS_CODE_SUCCESS = "success"
     private const val AUTH_STATUS_CODE_CANCELLED_BY_USER = "cancelled_by_user"
@@ -51,7 +52,8 @@ internal object AppLinkUtil {
         codeChallengeMethod: String,
         callbackUrl: Uri,
         packageName: String?,
-        redirectUrl: String
+        redirectUrl: String,
+        partnerSdkVersion: String,
     ): Intent {
         val uri = baseUri.buildUpon()
             .appendQueryParameter(QUERY_PARAMETER_CLIENT_ID, clientId)
@@ -60,6 +62,7 @@ internal object AppLinkUtil {
             .appendQueryParameter(QUERY_PARAMETER_CALLBACK_URL, callbackUrl.toString())
             .appendQueryParameter(QUERY_PARAMETER_PACKAGE, packageName)
             .appendQueryParameter(QUERY_PARAMETER_REDIRECT_URI, redirectUrl)
+            .appendQueryParameter(QUERY_PARTNER_SDK_VERSION, partnerSdkVersion)
             .build()
         return Intent(Intent.ACTION_VIEW).apply {
             data = uri

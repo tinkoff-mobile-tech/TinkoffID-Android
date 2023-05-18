@@ -65,7 +65,15 @@ public class TinkoffIdAuth(
         val codeChallenge = CodeVerifierUtil.deriveCodeVerifierChallenge(codeVerifier)
         val codeChallengeMethod = CodeVerifierUtil.getCodeVerifierChallengeMethod()
         codeVerifierStore.codeVerifier = codeVerifier
-        return AppLinkUtil.createAppLink(clientId, codeChallenge, codeChallengeMethod, callbackUrl, applicationContext.packageName, redirectUri)
+        return AppLinkUtil.createAppLink(
+            clientId,
+            codeChallenge,
+            codeChallengeMethod,
+            callbackUrl,
+            applicationContext.packageName,
+            redirectUri,
+            BuildConfig.VERSION_NAME,
+        )
     }
 
     /**
