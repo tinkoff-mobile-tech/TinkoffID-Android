@@ -1,6 +1,9 @@
 ## 1.0.5
 
 #### Fixed
+
+- [tinkoff-id] Внесены правки в документацию MC-6740
+
 #### Changes
 #### Additions
 
