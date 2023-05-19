@@ -62,7 +62,7 @@ implementation "ru.tinkoff.core.tinkoffauth:tinkoff-id:${version}"
 tinkoffIdAuth.obtainTokenPayload(refreshToken)
 ```
 
-В него нужно передать refreshToken, полученный ранее. Выполнять вызов  `getResponse()` необходимо не на ui потоке
+В него нужно передать refreshToken, полученный ранее. Выполнять вызов  `getResponse()` необходимо не на main потоке
 
 ### Отзыв авторизационных данных
 
@@ -118,15 +118,15 @@ tinkoffIdAuth.obtainTokenPayload(refreshToken)
 
 Базовый класс для работы c авторизацией
 
-| Функция                     | Описание                                                      |
-| ---------------------------- |---------------------------------------------------------------|
-| `isTinkoffAuthAvailable(): Boolean`          |    Выполняет проверку возможна ли авторизация через приложения группы Тинькофф на данном устройстве  |
-| `createTinkoffAuthIntent(callbackUrl: Uri): Intent`            | Создает Intent для открытия приложения группы Тинькофф для прохождения авторизации. На вход принимает applink или deeplink, по которому будет осуществлен переход после окончания процесса авторизации  |
-| `getTinkoffTokenPayload(uri: Uri): TinkoffCall<TinkoffTokenPayload>`                | Возвращает объект, который позволяет получить синхронно информацию о токене, которая придет к вам в `intent.data` после авторизации в Тинькофф  |
-| `getStatusCode(uri: Uri): TinkoffIdStatusCode?`	       | Позволяет получить статус выполнения авторизации из `intent.data` пришедшего к вам |
-| `obtainTokenPayload(refreshToken: String): TinkoffCall<TinkoffTokenPayload>` | Возвращает объект, который позволяет синхронно обновить токен по рефреш токену полученному ранее                                   |
-| `signOutByAccessToken(accessToken: String): TinkoffCall<Unit>` | Возвращает объект, который позволяет синхронно разлогинить по accessToken                             |
-| `signOutByRefreshToken(refreshToken: String): TinkoffCall<Unit>` | Возвращает объект, который позволяет синхронно разлогинить по refreshToken                                   |
+| Функция                     | Описание                                                                                                                                                                                                            |
+| ---------------------------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `isTinkoffAuthAvailable(): Boolean`          | Выполняет проверку возможна ли авторизация через приложения группы Тинькофф на данном устройстве                                                                                                                    |
+| `createTinkoffAuthIntent(callbackUrl: Uri): Intent`            | Создает Intent для открытия приложения группы Тинькофф для прохождения авторизации. На вход принимает Uri для создания AppLink/DeepLink, по которому будет осуществлен переход после окончания процесса авторизации |
+| `getTinkoffTokenPayload(uri: Uri): TinkoffCall<TinkoffTokenPayload>`                | Возвращает объект, который позволяет получить синхронно информацию о токене, которая придет к вам в `intent.data` после авторизации в Тинькофф                                                                      |
+| `getStatusCode(uri: Uri): TinkoffIdStatusCode?`	       | Позволяет получить статус выполнения авторизации из `intent.data` пришедшего к вам                                                                                                                                  |
+| `obtainTokenPayload(refreshToken: String): TinkoffCall<TinkoffTokenPayload>` | Возвращает объект, который позволяет синхронно обновить токен по рефреш токену полученному ранее                                                                                                                    |
+| `signOutByAccessToken(accessToken: String): TinkoffCall<Unit>` | Возвращает объект, который позволяет синхронно разлогинить по accessToken                                                                                                                                           |
+| `signOutByRefreshToken(refreshToken: String): TinkoffCall<Unit>` | Возвращает объект, который позволяет синхронно разлогинить по refreshToken                                                                                                                                          |
 
 ### TinkoffCall`<T>`
 
