@@ -17,8 +17,10 @@
 package ru.tinkoff.core.tinkoffId.error
 
 /**
- * Endpoint /auth/revoke
+ * Endpoint /auth/revoke.
  * Error types when revoking token
+ *
+ * @author Stanislav Mukhametshin
  */
 public object TokenSignOutErrorConstants {
 

@@ -17,8 +17,10 @@
 package ru.tinkoff.core.tinkoffId.error
 
 /**
- * Endpoint /auth/token
+ * Endpoint /auth/token.
  * Error types when refreshing or obtaining token
+ *
+ * @author Stanislav Mukhametshin
  */
 public object TinkoffTokenErrorConstants {
 

@@ -28,14 +28,15 @@ import java.security.SecureRandom
 /**
  * Generates code verifiers and challenges for PKCE exchange.
  *
- * @see "Proof Key for Code Exchange by OAuth Public Clients
+ * @see "Proof Key for Code Exchange by OAuth Public Clients"
+ * @author Stanislav Mukhametshin
  */
 internal object CodeVerifierUtil {
 
     /**
      * SHA-256 based code verifier challenge method.
      *
-     * @see "Proof Key for Code Exchange by OAuth Public Clients
+     * @see "Proof Key for Code Exchange by OAuth Public Clients"
      */
     const val CODE_CHALLENGE_METHOD_S256 = "S256"
 
@@ -43,7 +44,7 @@ internal object CodeVerifierUtil {
      * Plain-text code verifier challenge method. This is only used by AppAuth for Android if
      * SHA-256 is not supported on this platform.
      *
-     * @see "Proof Key for Code Exchange by OAuth Public Clients
+     * @see "Proof Key for Code Exchange by OAuth Public Clients"
      */
     const val CODE_CHALLENGE_METHOD_PLAIN = "plain"
 
@@ -74,7 +75,7 @@ internal object CodeVerifierUtil {
     /**
      * Produces a challenge from a code verifier, using SHA-256 as the challenge method if the
      * system supports it (all Android devices _should_ support SHA-256), and falls back
-     * to the [&quot;plain&quot; challenge type][.CODE_CHALLENGE_METHOD_PLAIN] if
+     * to the [&quot;plain&quot; challenge type][CODE_CHALLENGE_METHOD_PLAIN] if
      * unavailable.
      */
     fun deriveCodeVerifierChallenge(codeVerifier: String): String {
@@ -92,8 +93,8 @@ internal object CodeVerifierUtil {
 
     /**
      * Returns the challenge method utilized on this system: typically
-     * [SHA-256][.CODE_CHALLENGE_METHOD_S256] if supported by
-     * the system, [plain][.CODE_CHALLENGE_METHOD_PLAIN] otherwise.
+     * [SHA-256][CODE_CHALLENGE_METHOD_S256] if supported by
+     * the system, [plain][CODE_CHALLENGE_METHOD_PLAIN] otherwise.
      */
     // no exception, so SHA-256 is supported
     fun getCodeVerifierChallengeMethod(): String {
