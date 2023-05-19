@@ -16,6 +16,7 @@
 
 package ru.tinkoff.core.tinkoffId
 
+import androidx.annotation.WorkerThread
 import ru.tinkoff.core.tinkoffId.error.TinkoffRequestException
 
 /**
@@ -36,6 +37,7 @@ public interface TinkoffCall<T> {
      * It can contain message [TinkoffErrorMessage][ru.tinkoff.core.tinkoffId.error.TinkoffErrorMessage]
      * with problem description
      */
+    @WorkerThread
     @Throws(TinkoffRequestException::class)
     public fun getResponse(): T
 
