@@ -8,7 +8,7 @@ ext {
     authVersion = getVersionName(VERSION_NAME)
 
     // tinkoff libs
-    sslTrustedCertsVersion = '1.11.2'
+    sslTrustedCertsVersion = '1.12.2'
 
     // android libs
     kotlinVersion = '1.8.10'
