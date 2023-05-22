@@ -16,6 +16,7 @@
 
 package ru.tinkoff.core.tinkoffId
 
+import androidx.annotation.WorkerThread
 import ru.tinkoff.core.tinkoffId.error.TinkoffRequestException
 
 /**
@@ -27,18 +28,21 @@ public interface TinkoffCall<T> {
 
     /**
      * Function for synchronous operations
+     *
      * NOTE should not be called from the main thread
      *
      * @return T
      *
      * @throws TinkoffRequestException if something goes wrong.
-     * It can contain message {@link TinkoffErrorMessage} with problem description
+     * It can contain message [TinkoffErrorMessage][ru.tinkoff.core.tinkoffId.error.TinkoffErrorMessage]
+     * with problem description
      */
+    @WorkerThread
     @Throws(TinkoffRequestException::class)
     public fun getResponse(): T
 
     /**
-     * Function to cancel TinkoffCall
+     * Function to cancel [TinkoffCall]
      */
     public fun cancel()
 }

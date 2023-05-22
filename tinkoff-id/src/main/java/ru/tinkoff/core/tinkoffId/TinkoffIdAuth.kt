@@ -56,7 +56,7 @@ public class TinkoffIdAuth(
     /**
      * Creates intent to open Tinkoff App and later return auth data.
      *
-     * @param callbackUrl - AppLink/Deep link that will be opened when auth process will be finished
+     * @param callbackUrl AppLink/Deep link that will be opened when auth process will be finished
      * @return implicit Intent to open Tinkoff App
      */
     @RequiresApi(Build.VERSION_CODES.M)
@@ -79,7 +79,7 @@ public class TinkoffIdAuth(
     /**
      * Checks if tinkoff auth available on current device
      *
-     * @return true if we can open Tinkoff application
+     * @return true if we can open Tinkoff App
      */
     public fun isTinkoffAuthAvailable(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
@@ -90,8 +90,9 @@ public class TinkoffIdAuth(
     /**
      * Function to get Application Token Call
      *
-     * @param uri - the uri returned after auth process from tinkoff in backAppLink {@see createPartnerAuthIntent}
-     * @return TinkoffCall object to get Tinkoff Token, by sending request
+     * @param uri the uri returned after auth process from Tinkoff App
+     * in callbackIntent based on callbackUrl from [createTinkoffAuthIntent]
+     * @return [TinkoffCall] object to get Tinkoff Token by sending request
      *
      * @throws TinkoffRequestException if request not executed
      *
@@ -105,8 +106,10 @@ public class TinkoffIdAuth(
     /**
      * Function to get status code after authorization process
      *
-     * @param uri - the uri returned after auth process from tinkoff in backAppLink {@see createPartnerAuthIntent}
-     * @return TinkoffAuthStatusCode. SUCCESS - we can perform getTinkoffTokenPayload(), CANCELLED_BY_USER -  user
+     * @param uri the uri returned after auth process from Tinkoff App
+     * in callbackIntent based on callbackUrl from [createTinkoffAuthIntent]
+     * @return [TinkoffIdStatusCode][ru.tinkoff.core.tinkoffId.TinkoffIdStatusCode].
+     * SUCCESS - we can perform getTinkoffTokenPayload(), CANCELLED_BY_USER -  user
      * canceled authorization process
      *
      */
@@ -117,8 +120,8 @@ public class TinkoffIdAuth(
     /**
      * Function to get Application Refresh Token Call
      *
-     * @param refreshToken - refreshToken of current session {@see TinkoffTokenInfo#refreshToken}
-     * @return TinkoffCall object to get Tinkoff Token, by sending request
+     * @param refreshToken [refreshToken][TinkoffTokenPayload.refreshToken] of current session
+     * @return [TinkoffCall] object to get Tinkoff Token by sending request
      *
      * @throws TinkoffRequestException if request not executed
      */
@@ -130,8 +133,8 @@ public class TinkoffIdAuth(
     /**
      * Sign out call by using accessToken
      *
-     * @param accessToken - accessToken of current session {@see TinkoffTokenInfo#accessToken}
-     * @return TinkoffCall object that will return Unit if request successfully executed
+     * @param accessToken [accessToken][TinkoffTokenPayload.accessToken] of current session
+     * @return [TinkoffCall] object that will return Unit if request successfully executed
      *
      * @throws TinkoffRequestException if request not executed
      */
@@ -143,8 +146,8 @@ public class TinkoffIdAuth(
     /**
      * Sign out call by using refreshToken
      *
-     * @param refreshToken - refreshToken of current session {@see TinkoffTokenInfo#refreshToken}
-     * @return TinkoffCall object that will return Unit if request successfully executed
+     * @param refreshToken [refreshToken][TinkoffTokenPayload.refreshToken] of current session
+     * @return [TinkoffCall] object that will return Unit if request successfully executed
      *
      * @throws TinkoffRequestException if request not executed
      */
