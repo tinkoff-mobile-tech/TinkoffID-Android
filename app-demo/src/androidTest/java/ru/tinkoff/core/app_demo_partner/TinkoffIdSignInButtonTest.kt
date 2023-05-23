@@ -1,12 +1,18 @@
 package ru.tinkoff.core.app_demo_partner
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withChild
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnitRunner
-import androidx.test.uiautomator.By
-import androidx.test.uiautomator.UiDevice
-import org.junit.Assert.assertTrue
+import org.hamcrest.CoreMatchers.allOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +28,7 @@ class TinkoffIdSignInButtonTest : AndroidJUnitRunner() {
     @get:Rule
     val activityRule = ActivityTestRule(PartnerActivity::class.java, false, true)
 
-    lateinit var standardButton: TinkoffIdSignInButton
+    private lateinit var standardButton: TinkoffIdSignInButton
 
     @Before
     fun setUp() {
@@ -32,67 +38,61 @@ class TinkoffIdSignInButtonTest : AndroidJUnitRunner() {
     }
 
     @Test
-    fun testStandardButtonTextPresence() {
-        checkPresenceTextOnScreen(createFinalTitle(originalTitlePart))
-    }
-
-    @Test
-    fun testStandardButtonTextUpdate() {
+    fun testTitleChanging() {
         runOnMainThread {
             standardButton.title = SOME_TEXT
         }
 
-        checkPresenceTextOnScreen(createFinalTitle(SOME_TEXT))
+        checkTextOnView(createFinalTitle(SOME_TEXT))
     }
 
     @Test
-    fun testStandardButtonTextAbsence() {
-        runOnMainThread {
-            standardButton.title = null
-        }
-
-        checkPresenceTextOnScreen(permanentTitlePart)
-    }
-
-    @Test
-    fun testStandardButtonBadgePresence() {
-        checkPresenceTextOnScreen(originalBadge)
-    }
-
-    @Test
-    fun testStandardButtonBadgeUpdate() {
+    fun testBadgeTextChanging() {
         runOnMainThread {
             standardButton.badgeText = SOME_TEXT
         }
 
-        checkPresenceTextOnScreen(SOME_TEXT)
+        checkTextOnView(SOME_TEXT)
     }
 
     @Test
-    fun testStandardButtonBadgeAbsence() {
+    fun testTextElementsHidingInCompactMode() {
         runOnMainThread {
-            standardButton.badgeText = null
-        }
-
-        checkAbsenceTextOnScreen(originalBadge)
-    }
-
-    @Test
-    fun testStandardButtonAbsenceElements() {
-        runOnMainThread {
+            standardButton.title = SOME_TEXT
+            standardButton.badgeText = SOME_TEXT
             standardButton.isCompact = true
         }
 
-        checkAbsenceTextOnScreen(createFinalTitle(originalTitlePart))
-        checkAbsenceTextOnScreen(originalBadge)
+        onView(
+            allOf(
+                withId(standardButtonId),
+                // title element
+                withChild(
+                    allOf(
+                        withText(createFinalTitle(SOME_TEXT)),
+                        withEffectiveVisibility(ViewMatchers.Visibility.GONE)
+                    )
+                ),
+                // badge element
+                withChild(
+                    allOf(
+                        withText(SOME_TEXT),
+                        withEffectiveVisibility(ViewMatchers.Visibility.GONE)
+                    )
+                ),
+            )
+        ).check(matches(isDisplayed()))
     }
 
-    private fun checkPresenceTextOnScreen(text: String) {
-        assertTrue("Not found text \"$text\" on screen", UiDevice.getInstance(getInstrumentation()).hasObject(By.textContains(text)))
+    private fun checkTextOnView(text: String) {
+        onView(
+            allOf(
+                withId(standardButtonId),
+                withChild(withText(text))
+            )
+        ).check(matches(isDisplayed()))
     }
-    private fun checkAbsenceTextOnScreen(text: String) {
-        assertTrue("Found text \"$text\" on screen", !UiDevice.getInstance(getInstrumentation()).hasObject(By.textContains(text)))
-    }
+
     private fun createFinalTitle(titlePart: String) = "$titlePart $permanentTitlePart"
     private fun runOnMainThread(block: () -> Unit) {
         activityRule.runOnUiThread(block)
@@ -101,10 +101,8 @@ class TinkoffIdSignInButtonTest : AndroidJUnitRunner() {
     private companion object {
         private const val SOME_TEXT = "test"
 
-        private const val standardButtonId = R.id.standardButtonTinkoffAuth
+        private const val standardButtonId = R.id.standardSmallBlackButtonTinkoffAuth
 
-        private val originalTitlePart = getInstrumentation().targetContext.resources.getString(R.string.partner_auth_sign_in_button_title)
         private val permanentTitlePart = getInstrumentation().targetContext.resources.getString(ru.tinkoff.core.tinkoffId.R.string.tinkoff_id_tinkoff_text)
-        private val originalBadge = getInstrumentation().targetContext.resources.getString(R.string.partner_auth_sign_in_button_badge)
     }
 }
