@@ -16,6 +16,8 @@
 
 package ru.tinkoff.core.tinkoffId.api
 
+import android.content.Context
+import android.net.Uri
 import okhttp3.Call
 import okhttp3.FormBody
 import okhttp3.HttpUrl
@@ -24,7 +26,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okio.ByteString.Companion.encodeUtf8
+import ru.tinkoff.core.components.security.ssltrusted.certs.SslTrustedCerts.enrichWithTrustedCerts
 import ru.tinkoff.core.tinkoffId.BuildConfig
+import java.util.concurrent.TimeUnit
 
 /**
  * @author Stanislav Mukhametshin
@@ -90,6 +94,7 @@ internal class TinkoffIdApi(
     companion object {
 
         private const val HOST = "https://id.tinkoff.ru"
+        private const val PATH_AUTHORIZE = "auth/authorize"
         private const val PATH_TOKEN = "auth/token"
         private const val PATH_REVOKE = "auth/revoke"
 
@@ -103,10 +108,14 @@ internal class TinkoffIdApi(
         private const val FIELD_CLIENT_ID = "client_id"
         private const val FIELD_CODE = "code"
         private const val FIELD_REDIRECT_URI = "redirect_uri"
+        private const val FIELD_CODE_CHALLENGE = "code_challenge"
+        private const val FIELD_CODE_CHALLENGE_METHOD = "code_challenge_method"
         private const val FIELD_CODE_VERIFIER = "code_verifier"
         private const val FIELD_TOKEN = "token"
         private const val FIELD_TOKEN_TYPE_HINT = "token_type_hint"
         private const val FIELD_CLIENT_VERSION = "client_version"
+        private const val FIELD_RESPONSE_TYPE = "response_type"
+        private const val FIELD_RESPONSE_MODE = "response_mode"
 
         private const val PARAM_DEFAULT_VENDOR = "tinkoff_android"
         private const val GRANT_TYPE_AUTHORIZATION_CODE = "authorization_code"
@@ -114,5 +123,35 @@ internal class TinkoffIdApi(
 
         const val TOKEN_HINT_TYPE_ACCESS_TOKEN = "access_token"
         const val TOKEN_HINT_TYPE_REFRESH_TOKEN = "refresh_token"
+
+        private const val OKHTTP_TIMEOUT_SECONDS = 60L
+
+        fun createTinkoffIdApi(context: Context): TinkoffIdApi {
+            val okHttpClient = OkHttpClient.Builder()
+                .enrichWithTrustedCerts(context)
+                .readTimeout(OKHTTP_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .writeTimeout(OKHTTP_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .connectTimeout(OKHTTP_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .build()
+            return TinkoffIdApi(okHttpClient)
+        }
+
+        fun getStartWebViewAuthUrl(
+            clientId: String,
+            codeChallenge: String,
+            codeChallengeMethod: String,
+            redirectUri: String,
+        ): String {
+            return Uri.parse(HOST).buildUpon()
+                .path(PATH_AUTHORIZE)
+                .appendQueryParameter(FIELD_CLIENT_ID, clientId)
+                .appendQueryParameter(FIELD_CODE_CHALLENGE, codeChallenge)
+                .appendQueryParameter(FIELD_CODE_CHALLENGE_METHOD, codeChallengeMethod)
+                .appendQueryParameter(FIELD_REDIRECT_URI, redirectUri)
+                .appendQueryParameter(FIELD_RESPONSE_TYPE, "code")
+                .appendQueryParameter(FIELD_RESPONSE_MODE, "query")
+                .build()
+                .toString()
+        }
     }
 }

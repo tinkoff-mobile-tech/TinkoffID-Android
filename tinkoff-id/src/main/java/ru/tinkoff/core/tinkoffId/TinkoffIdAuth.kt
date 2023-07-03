@@ -21,13 +21,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
-import okhttp3.OkHttpClient
-import ru.tinkoff.core.components.security.ssltrusted.certs.SslTrustedCerts.enrichWithTrustedCerts
 import ru.tinkoff.core.tinkoffId.api.TinkoffIdApi
 import ru.tinkoff.core.tinkoffId.codeVerifier.CodeVerifierStore
 import ru.tinkoff.core.tinkoffId.codeVerifier.CodeVerifierUtil
 import ru.tinkoff.core.tinkoffId.error.TinkoffRequestException
-import java.util.concurrent.TimeUnit
+import ru.tinkoff.core.tinkoffId.ui.webView.TinkoffWebViewUiData
 
 /**
  * Main facade for tinkoff id authorization
@@ -43,37 +41,62 @@ public class TinkoffIdAuth(
     private val codeVerifierStore = CodeVerifierStore(applicationContext)
 
     init {
-        val client = OkHttpClient.Builder()
-            .enrichWithTrustedCerts(context)
-            .readTimeout(OKHTTP_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .writeTimeout(OKHTTP_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .connectTimeout(OKHTTP_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .build()
-        val api = TinkoffIdApi(client)
+        val api = TinkoffIdApi.createTinkoffIdApi(context)
         partnerService = TinkoffPartnerApiService(api)
     }
 
     /**
      * Creates intent to open Tinkoff App and later return auth data.
      *
-     * @param callbackUrl AppLink/Deep link that will be opened when auth process will be finished
+     * @param callbackUrl AppLink/DeepLink that will be opened when auth process will be finished
      * @return implicit Intent to open Tinkoff App
      */
     @RequiresApi(Build.VERSION_CODES.M)
     public fun createTinkoffAuthIntent(callbackUrl: Uri): Intent {
+        return createIntentWithPCKEState { codeChallenge, codeChallengeMethod ->
+            AppLinkUtil.createAppLink(
+                clientId,
+                codeChallenge,
+                codeChallengeMethod,
+                callbackUrl,
+                applicationContext.packageName,
+                redirectUri,
+                BuildConfig.VERSION_NAME,
+            )
+        }
+    }
+
+    /**
+     * Creates intent to open WebView Activity for authorization via Tinkoff web and later return auth data.
+     *
+     * @param callbackUrl AppLink/DeepLink that will be opened when auth process will be finished
+     * @return explicit Intent to open [TinkoffWebViewAuthActivity][ru.tinkoff.core.tinkoffId.ui.webView.TinkoffWebViewAuthActivity]
+     */
+    @RequiresApi(Build.VERSION_CODES.M)
+    public fun createTinkoffWebViewAuthIntent(callbackUrl: Uri): Intent {
+        return createIntentWithPCKEState { codeChallenge, codeChallengeMethod ->
+            AppLinkUtil.createWebViewAuthIntent(
+                context = applicationContext,
+                uiData = TinkoffWebViewUiData(
+                    clientId = clientId,
+                    codeChallenge = codeChallenge,
+                    codeChallengeMethod = codeChallengeMethod,
+                    redirectUri = redirectUri,
+                    callbackUrl = callbackUrl.toString()
+                ),
+            )
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun createIntentWithPCKEState(
+        intentCreator: (codeChallenge: String, codeChallengeMethod: String) -> Intent,
+    ): Intent {
         val codeVerifier = CodeVerifierUtil.generateRandomCodeVerifier()
         val codeChallenge = CodeVerifierUtil.deriveCodeVerifierChallenge(codeVerifier)
         val codeChallengeMethod = CodeVerifierUtil.getCodeVerifierChallengeMethod()
         codeVerifierStore.codeVerifier = codeVerifier
-        return AppLinkUtil.createAppLink(
-            clientId,
-            codeChallenge,
-            codeChallengeMethod,
-            callbackUrl,
-            applicationContext.packageName,
-            redirectUri,
-            BuildConfig.VERSION_NAME,
-        )
+        return intentCreator(codeChallenge, codeChallengeMethod)
     }
 
     /**
@@ -154,10 +177,5 @@ public class TinkoffIdAuth(
     @Throws(TinkoffRequestException::class)
     public fun signOutByRefreshToken(refreshToken: String): TinkoffCall<Unit> {
         return partnerService.revokeRefreshToken(refreshToken, clientId)
-    }
-
-    internal companion object {
-
-        private const val OKHTTP_TIMEOUT_SECONDS = 60L
     }
 }
