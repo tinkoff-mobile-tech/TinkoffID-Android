@@ -47,9 +47,13 @@ class PartnerActivity : AppCompatActivity() {
         intent.data?.let { partnerPresenter.getToken(it) }
 
         val clickListener = View.OnClickListener {
-            if (tinkoffPartnerAuth.isTinkoffAuthAvailable() && isDataCorrect()) {
+            if (isDataCorrect()) {
                 initTinkoffIdAuth()
-                val intent = tinkoffPartnerAuth.createTinkoffAuthIntent(partnerUri)
+                val intent = if (tinkoffPartnerAuth.isTinkoffAuthAvailable()) {
+                    tinkoffPartnerAuth.createTinkoffAuthIntent(partnerUri)
+                } else {
+                    tinkoffPartnerAuth.createTinkoffWebViewAuthIntent(partnerUri)
+                }
                 startActivity(intent)
             }
         }
