@@ -31,7 +31,7 @@
 
     <application>
         <activity android:name=".ui.webView.TinkoffWebViewAuthActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/TinkoffIdAuth.Theme"/>
     </application>
 
 </manifest>

@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import ru.tinkoff.core.tinkoffId.AppLinkUtil
 import ru.tinkoff.core.tinkoffId.R
 
@@ -15,18 +17,51 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
 
     private val presenter: TinkoffWebViewAuthPresenter by lazy { TinkoffWebViewAuthPresenter() }
 
+    private var webView: WebView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tinkoff_id_web_view_activity)
-        initWebView()
+
+        val uiData = AppLinkUtil.parseTinkoffWebViewUiData(intent)
+
+        initWebView(uiData)
+        initToolbar(uiData)
+        initBackPress(uiData)
+    }
+
+    private fun initToolbar(uiData: TinkoffWebViewUiData) {
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+
+        toolbar.inflateMenu(R.menu.tinkoff_id_web_view_auth_menu)
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            if (menuItem.itemId == R.id.reloadMenuItem) {
+                webView?.reload()
+                true
+            } else {
+                false
+            }
+        }
+
+        toolbar.setNavigationOnClickListener {
+            finishCancellation(uiData)
+        }
+    }
+
+    private fun initBackPress(uiData: TinkoffWebViewUiData) {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finishCancellation(uiData)
+            }
+        }
+        onBackPressedDispatcher.addCallback(callback)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun initWebView() {
-        val webView = findViewById<WebView>(R.id.webView)
-        val uiData = AppLinkUtil.parseTinkoffWebViewUiData(intent)
+    private fun initWebView(uiData: TinkoffWebViewUiData) {
+        webView = findViewById(R.id.webView)
         val url = presenter.getStartWebViewAuthUrl(uiData)
-        with(webView) {
+        webView?.run {
             webViewClient = TinkoffWebViewClient(createTinkoffWebViewCallback(uiData))
             loadUrl(url)
             settings.javaScriptEnabled = true
@@ -48,11 +83,17 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
                     )
                 )
             }
-
-            private fun finish(intent: Intent) {
-                startActivity(intent)
-                finish()
-            }
         }
+    }
+
+    private fun finishCancellation(uiData: TinkoffWebViewUiData) {
+        finish(
+            intent = AppLinkUtil.createBackAppCancelIntent(uiData.callbackUrl)
+        )
+    }
+
+    private fun finish(intent: Intent) {
+        startActivity(intent)
+        finish()
     }
 }

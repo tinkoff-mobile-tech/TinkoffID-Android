@@ -29,4 +29,6 @@
         <attr name="tinkoff_id_corner_radius" format="dimension"/>
         <attr name="tinkoff_id_font" format="reference"/>
     </declare-styleable>
+
+    <attr name="tinkoff_id_action_color" format="color" />
 </resources>

@@ -31,4 +31,8 @@
     <color name="tinkoff_id_button_black_style">#000000</color>
     <color name="tinkoff_id_button_pressed_black_style">#333333</color>
     <color name="tinkoff_id_badge_black_style">#3D3D3D</color>
+
+    <color name="tinkoff_id_action_color">#428BF9</color>
+    <color name="tinkoff_id_window_background">#FFF</color>
+
 </resources>

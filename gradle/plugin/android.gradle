@@ -12,6 +12,7 @@ android {
         versionCode rootProject.authCode
         versionName rootProject.authVersion
         buildConfigField 'String', 'VERSION_NAME', "\"${rootProject.authVersion}\""
+        vectorDrawables.useSupportLibrary = true
     }
 
     compileOptions {
