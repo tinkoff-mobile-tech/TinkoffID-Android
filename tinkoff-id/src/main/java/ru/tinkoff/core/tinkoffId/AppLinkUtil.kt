@@ -49,7 +49,7 @@ internal object AppLinkUtil {
         .appendPath("partner_auth")
         .build()
 
-    fun createAppLink(
+    fun createTinkoffAppAuthAppLink(
         clientId: String,
         codeChallenge: String,
         codeChallengeMethod: String,

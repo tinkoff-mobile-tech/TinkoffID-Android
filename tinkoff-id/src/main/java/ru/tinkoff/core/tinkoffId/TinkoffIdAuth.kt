@@ -52,9 +52,9 @@ public class TinkoffIdAuth(
      * @return implicit Intent to open Tinkoff App
      */
     @RequiresApi(Build.VERSION_CODES.M)
-    public fun createTinkoffAuthIntent(callbackUrl: Uri): Intent {
+    public fun createTinkoffAppAuthIntent(callbackUrl: Uri): Intent {
         return createIntentWithPCKEState { codeChallenge, codeChallengeMethod ->
-            AppLinkUtil.createAppLink(
+            AppLinkUtil.createTinkoffAppAuthAppLink(
                 clientId,
                 codeChallenge,
                 codeChallengeMethod,
@@ -100,11 +100,11 @@ public class TinkoffIdAuth(
     }
 
     /**
-     * Checks if tinkoff auth available on current device
+     * Checks if auth via Tinkoff App available on current device
      *
      * @return true if we can open Tinkoff App
      */
-    public fun isTinkoffAuthAvailable(): Boolean {
+    public fun isTinkoffAppAuthAvailable(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 AppLinkUtil.isPossibleToHandleAppLink(applicationContext) &&
                 CodeVerifierUtil.getCodeVerifierChallengeMethod() != CodeVerifierUtil.CODE_CHALLENGE_METHOD_PLAIN
@@ -114,7 +114,7 @@ public class TinkoffIdAuth(
      * Function to get Application Token Call
      *
      * @param uri the uri returned after auth process from Tinkoff App
-     * in callbackIntent based on callbackUrl from [createTinkoffAuthIntent]
+     * in callbackIntent based on callbackUrl from [createTinkoffAppAuthIntent]
      * @return [TinkoffCall] object to get Tinkoff Token by sending request
      *
      * @throws TinkoffRequestException if request not executed
@@ -130,7 +130,7 @@ public class TinkoffIdAuth(
      * Function to get status code after authorization process
      *
      * @param uri the uri returned after auth process from Tinkoff App
-     * in callbackIntent based on callbackUrl from [createTinkoffAuthIntent]
+     * in callbackIntent based on callbackUrl from [createTinkoffAppAuthIntent]
      * @return [TinkoffIdStatusCode][ru.tinkoff.core.tinkoffId.TinkoffIdStatusCode].
      * SUCCESS - we can perform getTinkoffTokenPayload(), CANCELLED_BY_USER -  user
      * canceled authorization process

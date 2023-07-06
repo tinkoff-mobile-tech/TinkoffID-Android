@@ -43,7 +43,7 @@ public class TinkoffIdAuthTest {
 
     @Test
     public fun testIntentCreation() {
-        val intent = tinkoffAuth.createTinkoffAuthIntent(testUri)
+        val intent = tinkoffAuth.createTinkoffAppAuthIntent(testUri)
         assertThat(intent.data).isNotNull()
         val queryParam = { paramName: String -> requireNotNull(intent.data).getQueryParameter(paramName) }
         assertThat(queryParam("clientId")).isEqualTo(CLIENT_ID)
