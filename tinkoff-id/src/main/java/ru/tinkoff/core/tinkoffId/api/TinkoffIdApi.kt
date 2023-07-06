@@ -117,6 +117,9 @@ internal class TinkoffIdApi(
         private const val FIELD_RESPONSE_TYPE = "response_type"
         private const val FIELD_RESPONSE_MODE = "response_mode"
 
+        private const val RESPONSE_TYPE_CODE = "code"
+        private const val RESPONSE_MODE_QUERY = "query"
+
         private const val PARAM_DEFAULT_VENDOR = "tinkoff_android"
         private const val GRANT_TYPE_AUTHORIZATION_CODE = "authorization_code"
         private const val GRANT_TYPE_REFRESH_TOKEN = "refresh_token"
@@ -148,8 +151,8 @@ internal class TinkoffIdApi(
                 .appendQueryParameter(FIELD_CODE_CHALLENGE, codeChallenge)
                 .appendQueryParameter(FIELD_CODE_CHALLENGE_METHOD, codeChallengeMethod)
                 .appendQueryParameter(FIELD_REDIRECT_URI, redirectUri)
-                .appendQueryParameter(FIELD_RESPONSE_TYPE, "code")
-                .appendQueryParameter(FIELD_RESPONSE_MODE, "query")
+                .appendQueryParameter(FIELD_RESPONSE_TYPE, RESPONSE_TYPE_CODE)
+                .appendQueryParameter(FIELD_RESPONSE_MODE, RESPONSE_MODE_QUERY)
                 .build()
                 .toString()
         }
