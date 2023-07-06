@@ -36,6 +36,23 @@ internal class TinkoffIdApiTest {
         uri.assertQueryParam(FIELD_RESPONSE_MODE, VALUE_RESPONSE_MODE)
     }
 
+    @Test
+    fun testCodeParsing() {
+        val url = Uri.parse(HOST).buildUpon()
+            .appendQueryParameter(FIELD_CODE, VALUE_CODE)
+            .build()
+            .toString()
+
+        val result = TinkoffIdApi.parseCode(url)
+
+        assertEquals(VALUE_CODE, result)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testCodeAbsence() {
+        TinkoffIdApi.parseCode("")
+    }
+
     private fun Uri.assertQueryParam(paramName: String, expectedValue: String) {
         val actualValue = getQueryParameter(paramName)
         assertEquals(expectedValue, actualValue)
@@ -51,11 +68,13 @@ internal class TinkoffIdApiTest {
         private const val FIELD_CODE_CHALLENGE_METHOD = "code_challenge_method"
         private const val FIELD_RESPONSE_TYPE = "response_type"
         private const val FIELD_RESPONSE_MODE = "response_mode"
+        private const val FIELD_CODE = "code"
 
         private const val VALUE_CLIENT_ID = "client_id_value"
         private const val VALUE_CODE_CHALLENGE = "code_challenge_value"
         private const val VALUE_CODE_CHALLENGE_METHOD = "code_challenge_method_value"
         private const val VALUE_REDIRECT_URI = "redirect_uri_value"
+        private const val VALUE_CODE = "code_value"
         private const val VALUE_RESPONSE_TYPE = "code"
         private const val VALUE_RESPONSE_MODE = "query"
     }

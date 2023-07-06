@@ -40,17 +40,11 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
                 return url.startsWith(uiData.redirectUri)
             }
 
-            override fun finishCancellation() {
-                finish(
-                    intent = AppLinkUtil.createBackAppCancelIntent(uiData.callbackUrl)
-                )
-            }
-
-            override fun finishSuccess(code: String) {
+            override fun finishSuccess(url: String) {
                 finish(
                     intent = AppLinkUtil.createBackAppCodeIntent(
                         callbackUrl = uiData.callbackUrl,
-                        code = code,
+                        code = presenter.parseCode(url),
                     )
                 )
             }

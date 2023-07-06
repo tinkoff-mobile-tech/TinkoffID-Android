@@ -153,5 +153,13 @@ internal class TinkoffIdApi(
                 .build()
                 .toString()
         }
+
+        fun parseCode(url: String): String {
+            return requireNotNull(
+                Uri.parse(url).getQueryParameter(FIELD_CODE)
+            ) {
+                "The server must specify the code when completing authorization"
+            }
+        }
     }
 }

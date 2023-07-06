@@ -15,4 +15,8 @@ internal class TinkoffWebViewAuthPresenter {
             redirectUri = uiData.redirectUri,
         )
     }
+
+    fun parseCode(url: String): String {
+        return TinkoffIdApi.parseCode(url)
+    }
 }

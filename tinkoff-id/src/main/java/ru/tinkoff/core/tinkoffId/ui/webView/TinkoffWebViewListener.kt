@@ -7,7 +7,5 @@ internal interface TinkoffWebViewListener {
 
     fun isUrlForCompleteAuth(url: String): Boolean
 
-    fun finishCancellation()
-
-    fun finishSuccess(code: String)
+    fun finishSuccess(url: String)
 }

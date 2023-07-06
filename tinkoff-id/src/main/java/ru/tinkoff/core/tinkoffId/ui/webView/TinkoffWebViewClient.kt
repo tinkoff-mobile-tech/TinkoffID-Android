@@ -1,6 +1,5 @@
 package ru.tinkoff.core.tinkoffId.ui.webView
 
-import android.net.Uri
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -18,21 +17,7 @@ internal class TinkoffWebViewClient(
             return false
         }
 
-        finishAuth(url)
+        listener.finishSuccess(url)
         return true
-    }
-
-    private fun finishAuth(url: String) {
-        val code = requireNotNull(
-            Uri.parse(url).getQueryParameter(FIELD_CODE)
-        ) {
-            "The server must specify the code when completing authorization"
-        }
-
-        listener.finishSuccess(code)
-    }
-
-    private companion object {
-        const val FIELD_CODE = "code"
     }
 }
