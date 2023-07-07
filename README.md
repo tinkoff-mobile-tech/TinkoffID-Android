@@ -32,8 +32,8 @@ implementation "ru.tinkoff.core.tinkoffauth:tinkoff-id:${version}"
 
 Все необходимое взаимодействие в библиотеке идет только через класс `TinkoffIdAuth`.
 Сперва проверьте, есть ли возможность пройти авторизацию через  приложение Тинькофф.
-Для этого используйте - `tinkoffIdAuth.isTinkoffAuthAvailable()`.
-Когда флаг `isTinkoffAuthAvailable == true`, значит у пользователя установлено приложение Тинькофф, через которое можно осуществить вход.
+Для этого используйте - `tinkoffIdAuth.isTinkoffAppAuthAvailable()`.
+Когда флаг `isTinkoffAppAuthAvailable == true`, значит у пользователя установлено приложение Тинькофф, через которое можно осуществить вход.
 
 ### Выполнение авторизации
 
@@ -41,7 +41,7 @@ implementation "ru.tinkoff.core.tinkoffauth:tinkoff-id:${version}"
 1. Необходимо создать объект `TinkoffIdAuth(applicationContext, clientId, redirectUri)` - это основной класс для работы с библиотекой.
 2. Запустить партнерскую авторизацию, передав ваш App/Deep link (по данному uri приложение группы Тинькофф вернется обратно после процесса авторизации)
 ```kotlin
-    val intent = tinkoffIdAuth.createTinkoffAuthIntent(partnerUri)
+    val intent = tinkoffIdAuth.createTinkoffAppAuthIntent(partnerUri)
     startActivity(intent)
 ```
 3. После прохождения пользователем авторизации в приложении Тинькофф, произойдет переход в ваше приложение. В intent.data будет храниться информация по авторизации.
@@ -120,8 +120,8 @@ tinkoffIdAuth.obtainTokenPayload(refreshToken)
 
 | Функция                     | Описание                                                                                                                                                                                                            |
 | ---------------------------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `isTinkoffAuthAvailable(): Boolean`          | Выполняет проверку возможна ли авторизация через приложения группы Тинькофф на данном устройстве                                                                                                                    |
-| `createTinkoffAuthIntent(callbackUrl: Uri): Intent`            | Создает Intent для открытия приложения группы Тинькофф для прохождения авторизации. На вход принимает Uri для создания AppLink/DeepLink, по которому будет осуществлен переход после окончания процесса авторизации |
+| `isTinkoffAppAuthAvailable(): Boolean`          | Выполняет проверку возможна ли авторизация через приложения группы Тинькофф на данном устройстве                                                                                                                    |
+| `createTinkoffAppAuthIntent(callbackUrl: Uri): Intent`            | Создает Intent для открытия приложения группы Тинькофф для прохождения авторизации. На вход принимает Uri для создания AppLink/DeepLink, по которому будет осуществлен переход после окончания процесса авторизации |
 | `getTinkoffTokenPayload(uri: Uri): TinkoffCall<TinkoffTokenPayload>`                | Возвращает объект, который позволяет получить синхронно информацию о токене, которая придет к вам в `intent.data` после авторизации в Тинькофф                                                                      |
 | `getStatusCode(uri: Uri): TinkoffIdStatusCode?`	       | Позволяет получить статус выполнения авторизации из `intent.data` пришедшего к вам                                                                                                                                  |
 | `obtainTokenPayload(refreshToken: String): TinkoffCall<TinkoffTokenPayload>` | Возвращает объект, который позволяет синхронно обновить токен по рефреш токену полученному ранее                                                                                                                    |
