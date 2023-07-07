@@ -17,6 +17,21 @@ Tinkoff ID - SDK для авторизации пользователей Androi
 implementation "ru.tinkoff.core.tinkoffauth:tinkoff-id:${version}"
 ```
 
+Так же необходимо добавить в [network-security-config](https://developer.android.com/training/articles/security-config) содержащий сертификаты от Минцифры и доп. сертификат от Тинькофф.
+Пример можно посмотреть в [app-demo](app-demo). Выглядит он так:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="@raw/tinkoff_root_cert" />
+            <certificates src="@raw/ministry_of_digital_development_root_cert" />
+        </trust-anchors>ne
+    </base-config>
+</network-security-config>
+```
+
 ## Требования к приложению
 
 Для работы SDK необходимо следующее:
