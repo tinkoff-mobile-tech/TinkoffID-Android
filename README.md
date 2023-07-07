@@ -38,7 +38,7 @@ implementation "ru.tinkoff.core.tinkoffauth:tinkoff-id:${version}"
 
 + Зарегистрированный идентификатор авторизуемого приложения (`client_id`)
 + Uri авторизуемого клиента, на который будет выполнен редирект по завершению авторизации (`redirectUri`)
-+ Зарегистрированный авторизуемым приложением [App Link](https://developer.android.com/training/app-links), который будет использоваться для возврата в приложение после авторизации. Использование deep link возможно, но не рекомендовано.
++ Зарегистрированный авторизуемым приложением [AppLink](https://developer.android.com/training/app-links), который будет использоваться для возврата в приложение после авторизации. Использование DeepLink возможно, но не рекомендовано. (`callbackUrl`)
 + Авторизация через Тинькофф будет работать только начиная с версии Android 6.0, на более ранних версиях получить авторизационные данные не будет возможности.
 
 ## Интеграция
@@ -47,19 +47,25 @@ implementation "ru.tinkoff.core.tinkoffauth:tinkoff-id:${version}"
 
 Все необходимое взаимодействие в библиотеке идет только через класс `TinkoffIdAuth`.
 Сперва проверьте, есть ли возможность пройти авторизацию через  приложение Тинькофф.
-Для этого используйте - `tinkoffIdAuth.isTinkoffAppAuthAvailable()`.
-Когда флаг `isTinkoffAppAuthAvailable == true`, значит у пользователя установлено приложение Тинькофф, через которое можно осуществить вход.
+Для этого используйте `tinkoffIdAuth.isTinkoffAppAuthAvailable()`.
+Когда флаг `isTinkoffAppAuthAvailable == true`, значит у пользователя установлено приложение Тинькофф,
+через которое можно осуществить вход, используя `tinkoffPartnerAuth.createTinkoffAppAuthIntent(callbackUrl)`.
+Иначе можно запустить сценарий авторизации через WebView, использую `tinkoffPartnerAuth.createTinkoffWebViewAuthIntent(callbackUrl)`.
 
 ### Выполнение авторизации
 
 Для авторизации:
 1. Необходимо создать объект `TinkoffIdAuth(applicationContext, clientId, redirectUri)` - это основной класс для работы с библиотекой.
-2. Запустить партнерскую авторизацию, передав ваш App/Deep link (по данному uri приложение группы Тинькофф вернется обратно после процесса авторизации)
+2. На основе значения `tinkoffIdAuth.isTinkoffAppAuthAvailable()` выбрать способ авторизации. Запустить партнерскую авторизацию, передав в качестве аргумента `callbackUrl` ваш AppLink/DeepLink (по данному uri приложение группы Тинькофф вернется обратно после процесса авторизации)
 ```kotlin
-    val intent = tinkoffIdAuth.createTinkoffAppAuthIntent(partnerUri)
+    val intent = if (tinkoffPartnerAuth.isTinkoffAppAuthAvailable()) { 
+        tinkoffPartnerAuth.createTinkoffAppAuthIntent(callbackUrl)
+    } else { 
+        tinkoffPartnerAuth.createTinkoffWebViewAuthIntent(callbackUrl)
+    }
     startActivity(intent)
 ```
-3. После прохождения пользователем авторизации в приложении Тинькофф, произойдет переход в ваше приложение. В intent.data будет храниться информация по авторизации.
+3. После прохождения пользователем авторизации в приложении Тинькофф, произойдет переход в ваше приложение на основе `callbackUrl`. В `intent.data` будет храниться информация по авторизации.
 
 ### Завершение авторизации
 Успешность авторизации можно проверить методом - `tinkoffIdAuth.getStatusCode(uriFromIntentData)`. Метод вернет статус `SUCCESS` или `CANCELLED_BY_USER`
@@ -68,16 +74,16 @@ implementation "ru.tinkoff.core.tinkoffauth:tinkoff-id:${version}"
 1. Нужно получить `TinkoffTokenPayload`, выполнив `getTinkoffTokenPayload(uri).getResponse()`. Данный метод необходимо выполнять в отличном от main потоке.
 2. Полученный `TinkoffTokenPayload` будет содержать учетные данные пользователя
 
-При неуспешной авторизации придет статус в intent.data `CANCELLED_BY_USER` или приложение откроется без данных в intent.data.
+При неуспешной авторизации придет статус в `intent.data` `CANCELLED_BY_USER` или приложение откроется без данных в `intent.data`.
 
 ### Перевыпуск авторизационных данных
 
 Для перевыпуска accessToken необходимо использовать метод
 ```kotlin
-tinkoffIdAuth.obtainTokenPayload(refreshToken)
+    fun obtainTokenPayload(refreshToken: String): TinkoffCall<TinkoffTokenPayload>
 ```
 
-В него нужно передать refreshToken, полученный ранее. Выполнять вызов  `getResponse()` необходимо не на main потоке
+В него нужно передать refreshToken, полученный ранее. Выполнять вызов `getResponse()` необходимо не на main потоке
 
 ### Отзыв авторизационных данных
 
@@ -93,7 +99,7 @@ tinkoffIdAuth.obtainTokenPayload(refreshToken)
 ### Хранение Refresh Token
 
 Желательно реализовать безопасное хранение `tinkoffTokenPayload.refreshToken` в приложении,
-так как он необходим для перевыпуска токенов
+так как он необходим для перевыпуска токенов.
 
 ### UI
 
@@ -133,15 +139,16 @@ tinkoffIdAuth.obtainTokenPayload(refreshToken)
 
 Базовый класс для работы c авторизацией
 
-| Функция                     | Описание                                                                                                                                                                                                            |
-| ---------------------------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `isTinkoffAppAuthAvailable(): Boolean`          | Выполняет проверку возможна ли авторизация через приложения группы Тинькофф на данном устройстве                                                                                                                    |
-| `createTinkoffAppAuthIntent(callbackUrl: Uri): Intent`            | Создает Intent для открытия приложения группы Тинькофф для прохождения авторизации. На вход принимает Uri для создания AppLink/DeepLink, по которому будет осуществлен переход после окончания процесса авторизации |
-| `getTinkoffTokenPayload(uri: Uri): TinkoffCall<TinkoffTokenPayload>`                | Возвращает объект, который позволяет получить синхронно информацию о токене, которая придет к вам в `intent.data` после авторизации в Тинькофф                                                                      |
-| `getStatusCode(uri: Uri): TinkoffIdStatusCode?`	       | Позволяет получить статус выполнения авторизации из `intent.data` пришедшего к вам                                                                                                                                  |
-| `obtainTokenPayload(refreshToken: String): TinkoffCall<TinkoffTokenPayload>` | Возвращает объект, который позволяет синхронно обновить токен по рефреш токену полученному ранее                                                                                                                    |
-| `signOutByAccessToken(accessToken: String): TinkoffCall<Unit>` | Возвращает объект, который позволяет синхронно разлогинить по accessToken                                                                                                                                           |
-| `signOutByRefreshToken(refreshToken: String): TinkoffCall<Unit>` | Возвращает объект, который позволяет синхронно разлогинить по refreshToken                                                                                                                                          |
+| Функция                     | Описание                                                                                                                                                                                                                                                         |
+| ---------------------------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `isTinkoffAppAuthAvailable(): Boolean`          | Выполняет проверку возможна ли авторизация через приложения группы Тинькофф на данном устройстве                                                                                                                                                                 |
+| `createTinkoffAppAuthIntent(callbackUrl: Uri): Intent`            | Создает Intent для открытия приложения группы Тинькофф для прохождения авторизации. На вход принимает Uri для создания AppLink/DeepLink, по которому будет осуществлен переход после окончания процесса авторизации                                              |
+| `createTinkoffWebViewAuthIntent(callbackUrl: Uri): Intent`          | Создает Intent для открытия активность с WebView для прохождения авторизации в вебе. На вход принимает Uri для создания AppLink/DeepLink, по которому будет осуществлен переход после окончания процесса авторизации |
+| `getTinkoffTokenPayload(uri: Uri): TinkoffCall<TinkoffTokenPayload>`                | Возвращает объект, который позволяет получить синхронно информацию о токене, которая придет к вам в `intent.data` после авторизации в Тинькофф                                                                                                                   |
+| `getStatusCode(uri: Uri): TinkoffIdStatusCode?`	       | Позволяет получить статус выполнения авторизации из `intent.data` пришедшего к вам                                                                                                                                                                               |
+| `obtainTokenPayload(refreshToken: String): TinkoffCall<TinkoffTokenPayload>` | Возвращает объект, который позволяет синхронно обновить токен по рефреш токену полученному ранее                                                                                                                                                                 |
+| `signOutByAccessToken(accessToken: String): TinkoffCall<Unit>` | Возвращает объект, который позволяет синхронно разлогинить по accessToken                                                                                                                                                                                        |
+| `signOutByRefreshToken(refreshToken: String): TinkoffCall<Unit>` | Возвращает объект, который позволяет синхронно разлогинить по refreshToken                                                                                                                                                                                       |
 
 ### TinkoffCall`<T>`
 
@@ -210,8 +217,8 @@ SDK поставляется с примером приложения, где м
 В папке [app-demo](app-demo) содержится тестовое приложение.
 В данном приложении можно:
 - Проверить работу вашего clientId, подставив его в необходимое поле
-- Посмотреть дизайн кнопки
-- Авторизоваться
+- Посмотреть дизайны кнопки
+- Авторизоваться через приложение Тинькофф или WebView
 - Отозвать токены
 - Обновить токены
 

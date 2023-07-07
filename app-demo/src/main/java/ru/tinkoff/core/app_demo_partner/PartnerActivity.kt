@@ -14,7 +14,7 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 class PartnerActivity : AppCompatActivity() {
 
-    private val partnerUri: Uri = Uri.Builder()
+    private val callbackUrl: Uri = Uri.Builder()
         .scheme("https")
         .authority("www.partner.com")
         .appendPath("partner")
@@ -50,9 +50,9 @@ class PartnerActivity : AppCompatActivity() {
             if (isDataCorrect()) {
                 initTinkoffIdAuth()
                 val intent = if (tinkoffPartnerAuth.isTinkoffAppAuthAvailable()) {
-                    tinkoffPartnerAuth.createTinkoffAppAuthIntent(partnerUri)
+                    tinkoffPartnerAuth.createTinkoffAppAuthIntent(callbackUrl)
                 } else {
-                    tinkoffPartnerAuth.createTinkoffWebViewAuthIntent(partnerUri)
+                    tinkoffPartnerAuth.createTinkoffWebViewAuthIntent(callbackUrl)
                 }
                 startActivity(intent)
             }
