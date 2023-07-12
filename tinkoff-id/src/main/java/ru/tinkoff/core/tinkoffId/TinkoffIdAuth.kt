@@ -46,9 +46,9 @@ public class TinkoffIdAuth(
     }
 
     /**
-     * Creates intent to open Tinkoff App and later return auth data.
+     * Creates intent to open Tinkoff App and later return authorization data.
      *
-     * @param callbackUrl AppLink/DeepLink that will be opened when auth process will be finished
+     * @param callbackUrl AppLink/DeepLink that will be opened when authorization process will be finished
      * @return implicit Intent to open Tinkoff App
      */
     @RequiresApi(Build.VERSION_CODES.M)
@@ -67,9 +67,9 @@ public class TinkoffIdAuth(
     }
 
     /**
-     * Creates intent to open WebView Activity for authorization via Tinkoff web and later return auth data.
+     * Creates intent to open WebView Activity for authorization via Tinkoff web and later return authorization data.
      *
-     * @param callbackUrl AppLink/DeepLink that will be opened when auth process will be finished
+     * @param callbackUrl AppLink/DeepLink that will be opened when authorization process will be finished
      * @return explicit Intent to open [TinkoffWebViewAuthActivity][ru.tinkoff.core.tinkoffId.ui.webView.TinkoffWebViewAuthActivity]
      */
     @RequiresApi(Build.VERSION_CODES.M)
@@ -100,7 +100,7 @@ public class TinkoffIdAuth(
     }
 
     /**
-     * Checks if auth via Tinkoff App available on current device
+     * Checks if authorization via Tinkoff App is available on current device
      *
      * @return true if we can open Tinkoff App
      */
@@ -113,7 +113,7 @@ public class TinkoffIdAuth(
     /**
      * Function to get Application Token Call
      *
-     * @param uri the uri returned after auth process from Tinkoff App
+     * @param uri the uri returned after authorization process from Tinkoff App
      * in callbackIntent based on callbackUrl from [createTinkoffAppAuthIntent]
      * @return [TinkoffCall] object to get Tinkoff Token by sending request
      *
@@ -129,7 +129,7 @@ public class TinkoffIdAuth(
     /**
      * Function to get status code after authorization process
      *
-     * @param uri the uri returned after auth process from Tinkoff App
+     * @param uri the uri returned after authorization process from Tinkoff App
      * in callbackIntent based on callbackUrl from [createTinkoffAppAuthIntent]
      * @return [TinkoffIdStatusCode][ru.tinkoff.core.tinkoffId.TinkoffIdStatusCode].
      * SUCCESS - we can perform getTinkoffTokenPayload(), CANCELLED_BY_USER -  user

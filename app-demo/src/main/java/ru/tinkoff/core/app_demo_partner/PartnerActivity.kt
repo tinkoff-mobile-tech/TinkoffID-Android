@@ -130,7 +130,7 @@ class PartnerActivity : AppCompatActivity() {
     }
 
     fun onCancelledByUser() {
-        Toast.makeText(this, "Partner auth was cancelled", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Partner authorization was cancelled", Toast.LENGTH_SHORT).show()
     }
 
     fun onAuthError() {
