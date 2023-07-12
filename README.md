@@ -27,7 +27,7 @@ implementation "ru.tinkoff.core.tinkoffauth:tinkoff-id:${version}"
             <certificates src="system" />
             <certificates src="@raw/tinkoff_root_cert" />
             <certificates src="@raw/ministry_of_digital_development_root_cert" />
-        </trust-anchors>ne
+        </trust-anchors>
     </base-config>
 </network-security-config>
 ```
