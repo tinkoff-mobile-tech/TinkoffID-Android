@@ -12,8 +12,16 @@ internal class TinkoffWebViewClient(
 ) : WebViewClient() {
 
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        val url = request?.url.toString()
-        if (!listener.isUrlForCompleteAuth(url)) {
+        return processUrl(request?.url.toString())
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+        return processUrl(url)
+    }
+
+    private fun processUrl(url: String?): Boolean {
+        if (url == null || !listener.isUrlForCompleteAuth(url)) {
             return false
         }
 
