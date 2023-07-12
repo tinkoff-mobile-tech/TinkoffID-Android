@@ -46,14 +46,14 @@ public class TinkoffIdAuth(
     }
 
     /**
-     * Creates intent to open Tinkoff App and later return authorization data.
+     * Creates an intent to open Tinkoff App and later return authorization data.
      *
-     * @param callbackUrl AppLink/DeepLink that will be opened when authorization process will be finished
+     * @param callbackUrl AppLink/DeepLink that will be opened when authorization process finishes
      * @return implicit Intent to open Tinkoff App
      */
     @RequiresApi(Build.VERSION_CODES.M)
     public fun createTinkoffAppAuthIntent(callbackUrl: Uri): Intent {
-        return createIntentWithPCKEState { codeChallenge, codeChallengeMethod ->
+        return buildIntentWithPCKEState { codeChallenge, codeChallengeMethod ->
             AppLinkUtil.createTinkoffAppAuthAppLink(
                 clientId,
                 codeChallenge,
@@ -67,14 +67,14 @@ public class TinkoffIdAuth(
     }
 
     /**
-     * Creates intent to open WebView Activity for authorization via Tinkoff web and later return authorization data.
+     * Creates an intent to open WebView Activity for authorization via Tinkoff web and later returns authorization data.
      *
      * @param callbackUrl AppLink/DeepLink that will be opened when authorization process will be finished
      * @return explicit Intent to open [TinkoffWebViewAuthActivity][ru.tinkoff.core.tinkoffId.ui.webView.TinkoffWebViewAuthActivity]
      */
     @RequiresApi(Build.VERSION_CODES.M)
     public fun createTinkoffWebViewAuthIntent(callbackUrl: Uri): Intent {
-        return createIntentWithPCKEState { codeChallenge, codeChallengeMethod ->
+        return buildIntentWithPCKEState { codeChallenge, codeChallengeMethod ->
             AppLinkUtil.createWebViewAuthIntent(
                 context = applicationContext,
                 uiData = TinkoffWebViewUiData(
@@ -89,14 +89,14 @@ public class TinkoffIdAuth(
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun createIntentWithPCKEState(
-        intentCreator: (codeChallenge: String, codeChallengeMethod: String) -> Intent,
+    private fun buildIntentWithPCKEState(
+        intentBuilder: (codeChallenge: String, codeChallengeMethod: String) -> Intent,
     ): Intent {
         val codeVerifier = CodeVerifierUtil.generateRandomCodeVerifier()
         val codeChallenge = CodeVerifierUtil.deriveCodeVerifierChallenge(codeVerifier)
         val codeChallengeMethod = CodeVerifierUtil.getCodeVerifierChallengeMethod()
         codeVerifierStore.codeVerifier = codeVerifier
-        return intentCreator(codeChallenge, codeChallengeMethod)
+        return intentBuilder(codeChallenge, codeChallengeMethod)
     }
 
     /**

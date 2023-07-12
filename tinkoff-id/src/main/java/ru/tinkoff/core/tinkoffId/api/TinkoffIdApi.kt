@@ -139,7 +139,7 @@ internal class TinkoffIdApi(
             return TinkoffIdApi(okHttpClient)
         }
 
-        fun getStartWebViewAuthUrl(
+        fun buildWebViewAuthStartUrl(
             clientId: String,
             codeChallenge: String,
             codeChallengeMethod: String,

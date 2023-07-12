@@ -7,8 +7,8 @@ import ru.tinkoff.core.tinkoffId.api.TinkoffIdApi
  */
 internal class TinkoffWebViewAuthPresenter {
 
-    fun getStartWebViewAuthUrl(uiData: TinkoffWebViewUiData): String {
-        return TinkoffIdApi.getStartWebViewAuthUrl(
+    fun buildWebViewAuthStartUrl(uiData: TinkoffWebViewUiData): String {
+        return TinkoffIdApi.buildWebViewAuthStartUrl(
             clientId = uiData.clientId,
             codeChallenge = uiData.codeChallenge,
             codeChallengeMethod = uiData.codeChallengeMethod,

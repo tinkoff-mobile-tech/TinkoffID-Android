@@ -5,7 +5,7 @@ package ru.tinkoff.core.tinkoffId.ui.webView
  */
 internal interface TinkoffWebViewListener {
 
-    fun isUrlForCompleteAuth(url: String): Boolean
+    fun isUrlForAuthCompletion(url: String): Boolean
 
-    fun finishSuccess(url: String)
+    fun completeAuthWithSuccess(url: String)
 }

@@ -18,7 +18,7 @@ internal class TinkoffIdApiTest {
 
     @Test
     fun testWebViewUrlCreation() {
-        val result = TinkoffIdApi.getStartWebViewAuthUrl(
+        val result = TinkoffIdApi.buildWebViewAuthStartUrl(
             clientId = VALUE_CLIENT_ID,
             codeChallenge = VALUE_CODE_CHALLENGE,
             codeChallengeMethod = VALUE_CODE_CHALLENGE_METHOD,

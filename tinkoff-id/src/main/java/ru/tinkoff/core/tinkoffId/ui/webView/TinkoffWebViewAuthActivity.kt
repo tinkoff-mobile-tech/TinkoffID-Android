@@ -44,14 +44,14 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
         }
 
         toolbar.setNavigationOnClickListener {
-            finishCancellation(uiData)
+            finishWithCancellation(uiData.callbackUrl)
         }
     }
 
     private fun initBackPress(uiData: TinkoffWebViewUiData) {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                finishCancellation(uiData)
+                finishWithCancellation(uiData.callbackUrl)
             }
         }
         onBackPressedDispatcher.addCallback(callback)
@@ -60,7 +60,7 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView(uiData: TinkoffWebViewUiData) {
         webView = findViewById(R.id.webView)
-        val url = presenter.getStartWebViewAuthUrl(uiData)
+        val url = presenter.buildWebViewAuthStartUrl(uiData)
         webView?.run {
             webViewClient = TinkoffWebViewClient(createTinkoffWebViewCallback(uiData))
             loadUrl(url)
@@ -71,11 +71,11 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
     private fun createTinkoffWebViewCallback(uiData: TinkoffWebViewUiData): TinkoffWebViewListener {
         return object : TinkoffWebViewListener {
 
-            override fun isUrlForCompleteAuth(url: String): Boolean {
+            override fun isUrlForAuthCompletion(url: String): Boolean {
                 return url.startsWith(uiData.redirectUri)
             }
 
-            override fun finishSuccess(url: String) {
+            override fun completeAuthWithSuccess(url: String) {
                 finish(
                     intent = AppLinkUtil.createBackAppCodeIntent(
                         callbackUrl = uiData.callbackUrl,
@@ -86,9 +86,9 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
         }
     }
 
-    private fun finishCancellation(uiData: TinkoffWebViewUiData) {
+    private fun finishWithCancellation(callbackUrl: String) {
         finish(
-            intent = AppLinkUtil.createBackAppCancelIntent(uiData.callbackUrl)
+            intent = AppLinkUtil.createBackAppCancelIntent(callbackUrl)
         )
     }
 

@@ -21,11 +21,11 @@ internal class TinkoffWebViewClient(
     }
 
     private fun processUrl(url: String?): Boolean {
-        if (url == null || !listener.isUrlForCompleteAuth(url)) {
+        if (url == null || !listener.isUrlForAuthCompletion(url)) {
             return false
         }
 
-        listener.finishSuccess(url)
+        listener.completeAuthWithSuccess(url)
         return true
     }
 }
