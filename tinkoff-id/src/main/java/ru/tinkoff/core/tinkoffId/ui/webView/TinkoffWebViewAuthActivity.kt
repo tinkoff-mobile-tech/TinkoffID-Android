@@ -63,8 +63,8 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
         val url = presenter.buildWebViewAuthStartUrl(uiData)
         webView?.run {
             webViewClient = TinkoffWebViewClient(createTinkoffWebViewCallback(uiData))
-            loadUrl(url)
             settings.javaScriptEnabled = true
+            loadUrl(url)
         }
     }
 
