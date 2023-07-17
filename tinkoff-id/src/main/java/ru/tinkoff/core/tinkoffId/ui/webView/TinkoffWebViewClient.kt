@@ -1,5 +1,6 @@
 package ru.tinkoff.core.tinkoffId.ui.webView
 
+import android.webkit.CookieManager
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -10,6 +11,8 @@ import android.webkit.WebViewClient
 internal class TinkoffWebViewClient(
     private val listener: TinkoffWebViewListener,
 ) : WebViewClient() {
+
+    private var lastUrl: String? = null
 
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
         return processUrl(request?.url.toString())
@@ -22,10 +25,30 @@ internal class TinkoffWebViewClient(
 
     private fun processUrl(url: String?): Boolean {
         if (url == null || !listener.isUrlForAuthCompletion(url)) {
+            lastUrl = url
             return false
         }
 
+        lastUrl?.let { clearCookies(it) }
         listener.completeAuthWithSuccess(url)
         return true
+    }
+
+    private fun clearCookies(url: String) {
+        val cookieManager = CookieManager.getInstance()
+        val cookiesNames = CookieManager.getInstance().getCookie(url)
+            .split(COOKIES_SEPARATOR)
+            .map { cookie ->
+                val endIndexOfCookieName = cookie.indexOf(COOKIE_NAME_AND_VALUE_SEPARATOR)
+                cookie.substring(0, endIndexOfCookieName)
+            }
+        cookiesNames.forEach { cookieName ->
+            cookieManager.setCookie(url, "$cookieName$COOKIE_NAME_AND_VALUE_SEPARATOR")
+        }
+    }
+
+    private companion object {
+        const val COOKIES_SEPARATOR = "; "
+        const val COOKIE_NAME_AND_VALUE_SEPARATOR = "="
     }
 }
