@@ -45,6 +45,7 @@ internal class TinkoffWebViewClient(
         cookiesNames.forEach { cookieName ->
             cookieManager.setCookie(url, "$cookieName$COOKIE_NAME_AND_VALUE_SEPARATOR")
         }
+        cookieManager.flush()
     }
 
     private companion object {
