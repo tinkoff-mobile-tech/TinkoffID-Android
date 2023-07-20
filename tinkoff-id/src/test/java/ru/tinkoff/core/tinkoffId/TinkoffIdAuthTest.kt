@@ -43,15 +43,28 @@ public class TinkoffIdAuthTest {
 
     @Test
     public fun testIntentCreation() {
-        val intent = tinkoffAuth.createTinkoffAuthIntent(testUri)
+        val intent = tinkoffAuth.createTinkoffAppAuthIntent(testUri)
         assertThat(intent.data).isNotNull()
         val queryParam = { paramName: String -> requireNotNull(intent.data).getQueryParameter(paramName) }
         assertThat(queryParam("clientId")).isEqualTo(CLIENT_ID)
         assertThat(queryParam("code_challenge")).isNotEmpty()
         assertThat(queryParam("code_challenge_method")).isNotEmpty()
+        assertThat(queryParam("redirect_uri")).isEqualTo(REDIRECT_URL)
         assertThat(queryParam("callback_url")).isEqualTo(testUri.toString())
         assertThat(queryParam("package_name")).isNotEmpty()
         assertThat(queryParam("partner_sdk_version")).isEqualTo(BuildConfig.VERSION_NAME)
+    }
+
+    @Test
+    public fun testWebViewIntentCreation() {
+        val intent = tinkoffAuth.createTinkoffWebViewAuthIntent(testUri)
+        assertThat(intent.extras).isNotNull()
+        val queryParam = { paramName: String -> requireNotNull(intent.getStringExtra(paramName)) }
+        assertThat(queryParam("clientId")).isEqualTo(CLIENT_ID)
+        assertThat(queryParam("code_challenge")).isNotEmpty()
+        assertThat(queryParam("code_challenge_method")).isNotEmpty()
+        assertThat(queryParam("redirect_uri")).isEqualTo(REDIRECT_URL)
+        assertThat(queryParam("callback_url")).isEqualTo(testUri.toString())
     }
 
     @Test

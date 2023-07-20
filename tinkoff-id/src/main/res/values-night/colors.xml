@@ -17,8 +17,6 @@
 
 <resources>
 
-    <string name="tinkoff_id_tinkoff_text">Tinkoff</string>
-    <string name="tinkoff_id_reload_menu_item_text">Перезагрузить</string>
-    <string name="tinkoff_id_close_button_text">Закрыть</string>
+    <color name="tinkoff_id_window_background">#121212</color>
 
 </resources>

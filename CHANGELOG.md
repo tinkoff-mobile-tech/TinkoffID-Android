@@ -1,8 +1,10 @@
-## 1.0.6
+## 1.1.0
 
 #### Fixed
 #### Changes
 #### Additions
+
+- [app-demo], [tinkoff-id] Добавлен флоу авторизации через WebView MC-7723
 
 ## 1.0.5
 

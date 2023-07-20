@@ -14,7 +14,7 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 class PartnerActivity : AppCompatActivity() {
 
-    private val partnerUri: Uri = Uri.Builder()
+    private val callbackUrl: Uri = Uri.Builder()
         .scheme("https")
         .authority("www.partner.com")
         .appendPath("partner")
@@ -47,9 +47,13 @@ class PartnerActivity : AppCompatActivity() {
         intent.data?.let { partnerPresenter.getToken(it) }
 
         val clickListener = View.OnClickListener {
-            if (tinkoffPartnerAuth.isTinkoffAuthAvailable() && isDataCorrect()) {
+            if (isDataCorrect()) {
                 initTinkoffIdAuth()
-                val intent = tinkoffPartnerAuth.createTinkoffAuthIntent(partnerUri)
+                val intent = if (tinkoffPartnerAuth.isTinkoffAppAuthAvailable()) {
+                    tinkoffPartnerAuth.createTinkoffAppAuthIntent(callbackUrl)
+                } else {
+                    tinkoffPartnerAuth.createTinkoffWebViewAuthIntent(callbackUrl)
+                }
                 startActivity(intent)
             }
         }
@@ -126,7 +130,7 @@ class PartnerActivity : AppCompatActivity() {
     }
 
     fun onCancelledByUser() {
-        Toast.makeText(this, "Partner auth was cancelled", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Partner authorization was cancelled", Toast.LENGTH_SHORT).show()
     }
 
     fun onAuthError() {

@@ -21,6 +21,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import ru.tinkoff.core.tinkoffId.ui.webView.TinkoffWebViewAuthActivity
+import ru.tinkoff.core.tinkoffId.ui.webView.TinkoffWebViewUiData
 
 /**
  * @author Stanislav Mukhametshin
@@ -47,7 +49,7 @@ internal object AppLinkUtil {
         .appendPath("partner_auth")
         .build()
 
-    fun createAppLink(
+    fun createTinkoffAppAuthAppLink(
         clientId: String,
         codeChallenge: String,
         codeChallengeMethod: String,
@@ -70,6 +72,34 @@ internal object AppLinkUtil {
         }
     }
 
+    fun createWebViewAuthIntent(
+        context: Context,
+        uiData: TinkoffWebViewUiData,
+    ): Intent {
+        return Intent(context, TinkoffWebViewAuthActivity::class.java)
+            .putExtra(QUERY_PARAMETER_CLIENT_ID, uiData.clientId)
+            .putExtra(QUERY_PARAMETER_CODE_CHALLENGE, uiData.codeChallenge)
+            .putExtra(QUERY_PARAMETER_CODE_CHALLENGE_METHOD, uiData.codeChallengeMethod)
+            .putExtra(QUERY_PARAMETER_REDIRECT_URI, uiData.redirectUri)
+            .putExtra(QUERY_PARAMETER_CALLBACK_URL, uiData.callbackUrl)
+    }
+
+    fun parseTinkoffWebViewUiData(
+        intent: Intent,
+    ): TinkoffWebViewUiData {
+        return TinkoffWebViewUiData(
+            clientId = intent.requireStringExtra(QUERY_PARAMETER_CLIENT_ID),
+            codeChallenge = intent.requireStringExtra(QUERY_PARAMETER_CODE_CHALLENGE),
+            codeChallengeMethod = intent.requireStringExtra(QUERY_PARAMETER_CODE_CHALLENGE_METHOD),
+            redirectUri = intent.requireStringExtra(QUERY_PARAMETER_REDIRECT_URI),
+            callbackUrl = intent.requireStringExtra(QUERY_PARAMETER_CALLBACK_URL),
+        )
+    }
+
+    private fun Intent.requireStringExtra(key: String): String {
+        return requireNotNull(getStringExtra(key))
+    }
+
     fun isPossibleToHandleAppLink(context: Context): Boolean {
         val intent = Intent(Intent.ACTION_VIEW).apply {
             addCategory(PARTNER_AUTH_CATEGORY)
@@ -87,6 +117,31 @@ internal object AppLinkUtil {
             context.packageManager.queryIntentActivities(intent, flag)
         }
         return list.size > 0
+    }
+
+    fun createBackAppCodeIntent(
+        callbackUrl: String,
+        code: String,
+    ): Intent {
+        val data = buildBackAppLinkWithStatus(callbackUrl, AUTH_STATUS_CODE_SUCCESS)
+            .appendQueryParameter(QUERY_PARAMETER_CODE, code)
+            .build()
+        return Intent(Intent.ACTION_VIEW)
+            .setData(data)
+    }
+
+    fun createBackAppCancelIntent(
+        callbackUrl: String,
+    ): Intent {
+        val data = buildBackAppLinkWithStatus(callbackUrl, AUTH_STATUS_CODE_CANCELLED_BY_USER)
+            .build()
+        return Intent(Intent.ACTION_VIEW)
+            .setData(data)
+    }
+
+    private fun buildBackAppLinkWithStatus(callbackUrl: String, status: String): Uri.Builder {
+        return Uri.parse(callbackUrl).buildUpon()
+            .appendQueryParameter(QUERY_PARAMETER_AUTH_STATUS_CODE, status)
     }
 
     fun getAuthCode(uri: Uri): String? = uri.getQueryParameter(QUERY_PARAMETER_CODE)
