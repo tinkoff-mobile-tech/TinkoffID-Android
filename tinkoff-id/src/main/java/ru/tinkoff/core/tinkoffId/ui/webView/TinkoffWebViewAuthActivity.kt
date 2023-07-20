@@ -3,7 +3,6 @@ package ru.tinkoff.core.tinkoffId.ui.webView
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.ViewGroup
 import android.webkit.WebSettings.LOAD_NO_CACHE
 import android.webkit.WebView
 import androidx.activity.OnBackPressedCallback
@@ -93,10 +92,6 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
             }
 
             override fun onRenderProcessGoneDueLackOfMemory() {
-                findViewById<ViewGroup>(R.id.container).removeView(webView)
-                webView?.destroy()
-                webView = null
-
                 finishWithCancellation(uiData.callbackUrl)
             }
         }
