@@ -8,4 +8,6 @@ internal interface TinkoffWebViewListener {
     fun isUrlForAuthCompletion(url: String): Boolean
 
     fun completeAuthWithSuccess(url: String)
+
+    fun onRenderProcessGoneDueLackOfMemory()
 }

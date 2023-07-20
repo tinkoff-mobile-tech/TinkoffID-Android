@@ -3,6 +3,7 @@ package ru.tinkoff.core.tinkoffId.ui.webView
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import android.webkit.WebSettings.LOAD_NO_CACHE
 import android.webkit.WebView
 import androidx.activity.OnBackPressedCallback
@@ -18,7 +19,7 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
 
     private val presenter: TinkoffWebViewAuthPresenter by lazy { TinkoffWebViewAuthPresenter() }
 
-    private lateinit var webView: WebView
+    private var webView: WebView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +38,7 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
         toolbar.inflateMenu(R.menu.tinkoff_id_web_view_auth_menu)
         toolbar.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.reloadMenuItem) {
-                webView.reload()
+                webView?.reload()
                 true
             } else {
                 false
@@ -62,7 +63,7 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
     private fun initWebView(uiData: TinkoffWebViewUiData) {
         webView = findViewById(R.id.webView)
         val url = presenter.buildWebViewAuthStartUrl(uiData)
-        webView.run {
+        webView?.run {
             webViewClient = TinkoffWebViewClient(createTinkoffWebViewCallback(uiData))
             with(settings) {
                 javaScriptEnabled = true
@@ -89,6 +90,14 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
                         code = presenter.parseCode(url),
                     )
                 )
+            }
+
+            override fun onRenderProcessGoneDueLackOfMemory() {
+                findViewById<ViewGroup>(R.id.container).removeView(webView)
+                webView?.destroy()
+                webView = null
+
+                finishWithCancellation(uiData.callbackUrl)
             }
         }
     }

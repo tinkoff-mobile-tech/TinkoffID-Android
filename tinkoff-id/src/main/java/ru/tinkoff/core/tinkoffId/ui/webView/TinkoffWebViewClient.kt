@@ -1,6 +1,8 @@
 package ru.tinkoff.core.tinkoffId.ui.webView
 
+import android.os.Build
 import android.webkit.CookieManager
+import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -46,6 +48,15 @@ internal class TinkoffWebViewClient(
             cookieManager.setCookie(url, "$cookieName$COOKIE_NAME_AND_VALUE_SEPARATOR")
         }
         cookieManager.flush()
+    }
+
+    override fun onRenderProcessGone(view: WebView?, detail: RenderProcessGoneDetail?): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && detail?.didCrash() != true) {
+            listener.onRenderProcessGoneDueLackOfMemory()
+            return true
+        }
+
+        return false
     }
 
     private companion object {
