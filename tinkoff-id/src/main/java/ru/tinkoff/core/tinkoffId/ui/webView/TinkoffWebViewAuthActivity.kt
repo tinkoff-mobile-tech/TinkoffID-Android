@@ -91,7 +91,7 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
                 )
             }
 
-            override fun onRenderProcessGoneDueLackOfMemory() {
+            override fun completeAuthWithCancellation() {
                 finishWithCancellation(uiData.callbackUrl)
             }
         }

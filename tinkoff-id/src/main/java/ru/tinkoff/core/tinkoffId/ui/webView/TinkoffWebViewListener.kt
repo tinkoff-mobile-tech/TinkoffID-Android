@@ -9,5 +9,5 @@ internal interface TinkoffWebViewListener {
 
     fun completeAuthWithSuccess(url: String)
 
-    fun onRenderProcessGoneDueLackOfMemory()
+    fun completeAuthWithCancellation()
 }
