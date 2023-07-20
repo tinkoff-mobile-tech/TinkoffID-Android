@@ -18,7 +18,7 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
 
     private val presenter: TinkoffWebViewAuthPresenter by lazy { TinkoffWebViewAuthPresenter() }
 
-    private var webView: WebView? = null
+    private lateinit var webView: WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +37,7 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
         toolbar.inflateMenu(R.menu.tinkoff_id_web_view_auth_menu)
         toolbar.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.reloadMenuItem) {
-                webView?.reload()
+                webView.reload()
                 true
             } else {
                 false
@@ -62,7 +62,7 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
     private fun initWebView(uiData: TinkoffWebViewUiData) {
         webView = findViewById(R.id.webView)
         val url = presenter.buildWebViewAuthStartUrl(uiData)
-        webView?.run {
+        webView.run {
             webViewClient = TinkoffWebViewClient(createTinkoffWebViewCallback(uiData))
             with(settings) {
                 javaScriptEnabled = true
