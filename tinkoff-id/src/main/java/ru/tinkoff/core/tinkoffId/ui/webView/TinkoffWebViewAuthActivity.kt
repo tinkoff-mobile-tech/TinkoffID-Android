@@ -104,6 +104,7 @@ internal class TinkoffWebViewAuthActivity : AppCompatActivity() {
     }
 
     private fun finish(intent: Intent) {
+        intent.setPackage(packageName)
         startActivity(intent)
         finish()
     }
