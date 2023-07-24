@@ -46,7 +46,24 @@ public class TinkoffIdAuth(
     }
 
     /**
-     * Creates an intent to open Tinkoff App and later return authorization data.
+     * Creates an intent to open Tinkoff App or WebView Activity for authorization via Tinkoff web
+     * based on the results of the method [isTinkoffAppAuthAvailable()][isTinkoffAppAuthAvailable]
+     * and later return authorization data.
+     *
+     * @param callbackUrl AppLink/DeepLink that will be opened when authorization process finishes
+     * @return intent for authorization via Tinkoff
+     */
+    @RequiresApi(Build.VERSION_CODES.M)
+    public fun createTinkoffAuthIntent(callbackUrl: Uri): Intent {
+        return if (isTinkoffAppAuthAvailable()) {
+            createTinkoffAppAuthIntent(callbackUrl)
+        } else {
+            createTinkoffWebViewAuthIntent(callbackUrl)
+        }
+    }
+
+    /**
+     * Creates an intent to open Tinkoff App and later returns authorization data.
      *
      * @param callbackUrl AppLink/DeepLink that will be opened when authorization process finishes
      * @return implicit Intent to open Tinkoff App

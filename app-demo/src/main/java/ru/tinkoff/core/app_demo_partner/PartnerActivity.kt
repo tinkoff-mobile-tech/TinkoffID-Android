@@ -49,11 +49,7 @@ class PartnerActivity : AppCompatActivity() {
         val clickListener = View.OnClickListener {
             if (isDataCorrect()) {
                 initTinkoffIdAuth()
-                val intent = if (tinkoffPartnerAuth.isTinkoffAppAuthAvailable()) {
-                    tinkoffPartnerAuth.createTinkoffAppAuthIntent(callbackUrl)
-                } else {
-                    tinkoffPartnerAuth.createTinkoffWebViewAuthIntent(callbackUrl)
-                }
+                val intent = tinkoffPartnerAuth.createTinkoffAuthIntent(callbackUrl)
                 startActivity(intent)
             }
         }
